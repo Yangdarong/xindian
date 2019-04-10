@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xindian.dao.TbUserDao">
+    <resultMap id="tbUserResultMap" type="TbUser">
+        <id property="uId" column="u_id" />
+        <result property="uLoginId" column="u_loginid" />
+        <result property="uPassword" column="u_password" />
+        <result property="uSignature" column="u_signature" />
+        <result property="uSex" column="u_sex" />
+        <result property="uMail" column="u_email" />
+        <result property="uPhone" column="u_phone" />
+        <result property="uHeadPortrait" column="u_headportrait" />
+        <result property="uRegisterTime" column="u_registertime" />
+        <result property="uLoginTime" column="u_logintime" />
+        <result property="uUserStateId" column="u_userstateid" />
+
+    </resultMap>
+
+    <insert id="addUser" parameterType="TbUser">
+        INSERT INTO
+        tb_user(u_id, u_loginid, u_password, u_signature, u_sex, u_email, u_phone, u_headportrait, u_registertime, u_logintime, u_userstateid)
+        VALUES
+        (#{uId}, #{uLoginId}, #{uPassword}, #{uSignature}, #{uSex}, #{uMail}, #{uPhone}, #{uHeadPortrait}, #{uRegisterTime}, #{uLoginTime}, #{uUserStateId})
+    </insert>
+</mapper>
