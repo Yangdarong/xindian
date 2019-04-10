@@ -2,6 +2,9 @@ package com.xindian.pojo;
 
 import java.util.Date;
 
+/**
+ *  用户表
+ */
 public class TbUser {
     private int uId;
     private String uLoginId;
