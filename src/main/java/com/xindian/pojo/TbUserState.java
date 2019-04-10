@@ -1,7 +1,7 @@
 package com.xindian.pojo;
 
 /**
- * 用户状态表
+ * 用户状态
  */
 public class TbUserState {
 
