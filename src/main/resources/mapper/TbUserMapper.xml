@@ -24,4 +24,8 @@
         VALUES
         (#{uId}, #{uLoginId}, #{uPassword}, #{uSignature}, #{uSex}, #{uMail}, #{uPhone}, #{uHeadPortrait}, #{uRegisterTime}, #{uLoginTime}, #{uUserStateId})
     </insert>
+
+    <select id="queryUser" parameterType="TbUser" resultMap="tbUserResultMap">
+        SELECT * FROM tb_user where u_loginid = #{uLoginId} and u_password = #{uPassword}
+    </select>
 </mapper>

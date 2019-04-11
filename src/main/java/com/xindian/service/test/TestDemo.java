@@ -39,6 +39,16 @@ public class TestDemo {
         user.setuPassword("xiedc");
 
         userService.addUser(user);
+
+    }
+
+    @Test
+    public void testQueryUser() {
+        TbUser user = new TbUser();
+        user.setuLoginId("xiedc");
+        user.setuPassword("xiedc");
+
+        System.out.println(userService.queryUser(user));
     }
 
 }

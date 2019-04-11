@@ -16,4 +16,9 @@ public class TbUserServiceImpl implements TbUserService {
     public int addUser(TbUser user) {
         return userDao.addUser(user);
     }
+
+    @Override
+    public TbUser queryUser(TbUser user) {
+        return userDao.queryUser(user);
+    }
 }
