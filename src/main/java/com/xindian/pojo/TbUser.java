@@ -1,21 +1,36 @@
 package com.xindian.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
  *  用户表
  */
 public class TbUser {
+
+    @JsonIgnore
     private int uId;
+
     private String uLoginId;
+
+    @JsonIgnore
     private String uPassword;
+
     private String uSignature;
+
     private String uSex;
+
     private String uMail;
+
     private String uPhone;
+
     private String uHeadPortrait;
+
     private Date uRegisterTime;
+
     private Date uLoginTime;
+
     private int uUserStateId;
 
     public int getuId() {
