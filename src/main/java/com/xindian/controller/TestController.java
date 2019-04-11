@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 
 @Controller
 @RequestMapping("/test")
@@ -26,9 +27,13 @@ public class TestController {
 
     @RequestMapping("/queryUser.json")
     public void queryUserFromClient(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+        String uLoginId = request.getParameter("uLoginId");
+        String uPassword = request.getParameter("uPassword");
+
+
         TbUser user = new TbUser();
-        user.setuLoginId("yangxr");
-        user.setuPassword("yangxr");
+        user.setuLoginId(uLoginId);
+        user.setuPassword(uPassword);
 
         response.setContentType("application/json");
         PrintWriter out = null;
@@ -40,6 +45,7 @@ public class TestController {
 
 
             if (user != null) {
+                System.out.println("恭喜传输成功!");
 
                 result.setState(1);
                 result.setUser(user);
