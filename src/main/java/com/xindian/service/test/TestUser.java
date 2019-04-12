@@ -14,7 +14,7 @@ import java.sql.DriverManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/spring-*.xml")
-public class TestDemo {
+public class TestUser {
 
     @Autowired
     private TbUserService userService;
@@ -49,6 +49,16 @@ public class TestDemo {
         user.setuPassword("xiedc");
 
         System.out.println(userService.queryUser(user));
+    }
+
+    @Test
+    public void testUpdateUser() {
+        TbUser user = new TbUser();
+
+        user.setuId(1); // 修改yangxr
+        user.setuSignature("yangxr");
+
+        userService.updateUser(user);
     }
 
 }

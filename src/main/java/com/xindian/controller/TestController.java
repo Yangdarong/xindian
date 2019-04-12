@@ -50,7 +50,6 @@ public class TestController {
                 result.setState(1);
                 result.setUser(user);
 
-
                 out.write(mapper.writeValueAsString(result));
 
             } else {

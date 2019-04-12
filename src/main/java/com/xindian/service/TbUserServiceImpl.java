@@ -21,4 +21,15 @@ public class TbUserServiceImpl implements TbUserService {
     public TbUser queryUser(TbUser user) {
         return userDao.queryUser(user);
     }
+
+    @Override
+    public void updateUser(TbUser user) {
+        userDao.updateUser(user);
+    }
+
+    @Override
+    public void updateUserIcon(TbUser user, String iConUrl) {
+        user.setuHeadPortrait(iConUrl);
+        userDao.updateUserHeadPortrait(user);
+    }
 }

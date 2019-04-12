@@ -9,12 +9,10 @@ import java.util.Date;
  */
 public class TbUser {
 
-    @JsonIgnore
     private int uId;
 
     private String uLoginId;
 
-    @JsonIgnore
     private String uPassword;
 
     private String uSignature;

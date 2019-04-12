@@ -28,4 +28,20 @@
     <select id="queryUser" parameterType="TbUser" resultMap="tbUserResultMap">
         SELECT * FROM tb_user where u_loginid = #{uLoginId} and u_password = #{uPassword}
     </select>
+
+    <update id="updateUser" parameterType="TbUser">
+        UPDATE tb_user SET
+        u_signature = #{uSignature},
+        u_sex = #{uSex},
+        u_email = #{uMail},
+        u_phone = #{uPhone},
+
+        WHERE u_id = #{uId}
+    </update>
+
+    <update id="updateUserIcon" parameterType="TbUser">
+        UPDATE tb_user SET
+        u_headportrait = #{uHeadPortrait}
+        WHERE u_id = #{uId}
+    </update>
 </mapper>
