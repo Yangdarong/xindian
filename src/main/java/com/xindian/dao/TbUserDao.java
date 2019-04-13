@@ -11,4 +11,9 @@ public interface TbUserDao {
     void updateUser(TbUser user);
 
     void updateUserHeadPortrait(TbUser user);
+
+    TbUser queryUserByUserName(TbUser user);
+
+    void updateUserSex(TbUser user);
+
 }

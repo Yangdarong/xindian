@@ -23,6 +23,11 @@ public class TbUserServiceImpl implements TbUserService {
     }
 
     @Override
+    public TbUser queryUserByUserName(TbUser user) {
+        return userDao.queryUserByUserName(user);
+    }
+
+    @Override
     public void updateUser(TbUser user) {
         userDao.updateUser(user);
     }
@@ -31,5 +36,11 @@ public class TbUserServiceImpl implements TbUserService {
     public void updateUserIcon(TbUser user, String iConUrl) {
         user.setuHeadPortrait(iConUrl);
         userDao.updateUserHeadPortrait(user);
+    }
+
+    @Override
+    public void updatUserSex(TbUser user, String sex) {
+        user.setuSex(sex);
+        userDao.updateUserSex(user);
     }
 }

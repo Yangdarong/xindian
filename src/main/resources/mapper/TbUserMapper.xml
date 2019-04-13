@@ -29,6 +29,10 @@
         SELECT * FROM tb_user where u_loginid = #{uLoginId} and u_password = #{uPassword}
     </select>
 
+    <select id="queryUserByUserName" parameterType="TbUser" resultMap="tbUserResultMap">
+        SELECT * FROM tb_user where u_loginid = #{uLoginId}
+    </select>
+
     <update id="updateUser" parameterType="TbUser">
         UPDATE tb_user SET
         u_signature = #{uSignature},
@@ -42,6 +46,12 @@
     <update id="updateUserIcon" parameterType="TbUser">
         UPDATE tb_user SET
         u_headportrait = #{uHeadPortrait}
+        WHERE u_id = #{uId}
+    </update>
+
+    <update id="updateUserSex" parameterType="TbUser">
+        UPDATE tb_user SET
+        u_sex = #{uSex}
         WHERE u_id = #{uId}
     </update>
 </mapper>
