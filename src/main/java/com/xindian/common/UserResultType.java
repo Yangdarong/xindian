@@ -6,7 +6,7 @@ import com.xindian.pojo.TbUser;
  *  查询用户的json 返回结果
  */
 public class UserResultType {
-    private int state;
+    private int state;  // 1 返回成功 0 返回失败
 
     private TbUser user;
 

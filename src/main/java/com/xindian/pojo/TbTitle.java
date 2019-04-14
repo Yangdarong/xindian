@@ -7,6 +7,7 @@ public class TbTitle {
 
     private int tId;
     private String tName;
+    private int tFrom;
     private String tUrl;
 
     public int gettId() {
@@ -23,6 +24,14 @@ public class TbTitle {
 
     public void settName(String tName) {
         this.tName = tName;
+    }
+
+    public int gettFrom() {
+        return tFrom;
+    }
+
+    public void settFrom(int tFrom) {
+        this.tFrom = tFrom;
     }
 
     public String gettUrl() {
