@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xindian.dao.TbMerDao">
+    <resultMap id="tbMerResultType" type="TbMer">
+        <id property="mId" column="m_id" />
+        <result property="mLoginId" column="m_loginid" />
+        <result property="mPassword" column="m_password" />
+        <result property="mName" column="m_name" />
+        <result property="mAddress" column="m_address" />
+        <result property="mPhone" column="m_phone" />
+        <result property="mIsAdmin" column="m_isadmin" />
+        <result property="mUrl" column="m_url" />
+    </resultMap>
+
+    <select id="queryMer" parameterType="TbMer" resultMap="tbMerResultType">
+        SELECT * FROM tb_mer WHERE m_loginid = #{mLoginId} AND m_password = #{mPassword}
+    </select>
+</mapper>
