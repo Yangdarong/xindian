@@ -6,13 +6,36 @@ package com.xindian.pojo;
 public class TbFood {
 
     private int fId;
-    private int fFtId;
-    private int fMid;
+    private int ftId;
+    private int mId;
 
     private String fName;
     private String fUrl;    // 保存图片地址
     private Float fPrice;
     private Float fDPrice;
+
+    // 外键关联
+    private TbFoodType foodType;
+    private TbMer mer;
+
+    public TbFood() {
+    }
+
+    public TbFoodType getFoodType() {
+        return foodType;
+    }
+
+    public void setFoodType(TbFoodType foodType) {
+        this.foodType = foodType;
+    }
+
+    public TbMer getMer() {
+        return mer;
+    }
+
+    public void setMer(TbMer mer) {
+        this.mer = mer;
+    }
 
     public int getfId() {
         return fId;
@@ -22,28 +45,28 @@ public class TbFood {
         this.fId = fId;
     }
 
-    public int getfFtId() {
-        return fFtId;
-    }
-
-    public void setfFtId(int fFtId) {
-        this.fFtId = fFtId;
-    }
-
-    public int getfMid() {
-        return fMid;
-    }
-
-    public void setfMid(int fMid) {
-        this.fMid = fMid;
-    }
-
     public String getfName() {
         return fName;
     }
 
     public void setfName(String fName) {
         this.fName = fName;
+    }
+
+    public int getFtId() {
+        return ftId;
+    }
+
+    public void setFtId(int ftId) {
+        this.ftId = ftId;
+    }
+
+    public int getmId() {
+        return mId;
+    }
+
+    public void setmId(int mId) {
+        this.mId = mId;
     }
 
     public String getfUrl() {

@@ -10,11 +10,25 @@
         <result property="mName" column="m_name" />
         <result property="mAddress" column="m_address" />
         <result property="mPhone" column="m_phone" />
+        <result property="mIntro" column="m_intro" />
         <result property="mIsAdmin" column="m_isadmin" />
         <result property="mUrl" column="m_url" />
     </resultMap>
 
+    <select id="queryMerById" parameterType="int" resultMap="tbMerResultType">
+        SELECT * FROM tb_mer WHERE m_id = #{mId}
+    </select>
+
     <select id="queryMer" parameterType="TbMer" resultMap="tbMerResultType">
         SELECT * FROM tb_mer WHERE m_loginid = #{mLoginId} AND m_password = #{mPassword}
     </select>
+
+    <update id="updateMer" parameterType="TbMer">
+        UPDATE tb_mer SET
+          m_name = #{mName},
+          m_address = #{mAddress},
+          m_phone = #{mPhone},
+          m_Intro = #{mIntro}
+        WHERE m_id = #{mId}
+    </update>
 </mapper>

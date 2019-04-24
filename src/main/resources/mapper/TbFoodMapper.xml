@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xindian.dao.TbFoodDao">
+    <resultMap id="tbFoodAllInfoResultType" type="com.xindian.pojo.TbFood">
+        <id property="fId" column="f_id" />
+        <!--<result property="ftId" column="ft_id" />-->
+        <!--<result property="mId" column="m_id" />-->
+        <result property="fName" column="f_name" />
+        <result property="fUrl" column="f_url" />
+        <result property="fPrice" column="f_price" />
+        <result property="fDPrice" column="f_dprice" />
+
+        <association property="foodType" javaType="com.xindian.pojo.TbFoodType">
+            <id property="ftId" column="ft_id" />
+            <result property="ftName" column="ft_name" />
+        </association>
+
+        <association property="mer" javaType="com.xindian.pojo.TbMer">
+            <id property="mId" column="m_id" />
+            <result property="mName" column="m_name" />
+        </association>
+    </resultMap>
+
+    <select id="queryAllFoodsInfo" resultMap="tbFoodAllInfoResultType">
+        select f.f_id, f.f_name, f.f_url, f.f_price, f.f_dprice, ft.ft_name, m.m_name
+        from tb_food f, tb_food_type ft, tb_mer m
+          where f.ft_id = ft.ft_id AND f.m_id = m.m_id;
+    </select>
+
+    <select id="queryAllFoodsInfoFindPage" resultMap="tbFoodAllInfoResultType" parameterType="Map">
+        select f.f_id, f.f_name, f.f_url, f.f_price, f.f_dprice, ft.ft_name, m.m_name
+        from tb_food f, tb_food_type ft, tb_mer m
+        where f.ft_id = ft.ft_id AND f.m_id = m.m_id
+        <if test="start != null and size != null">
+          limit #{start}, #{size}
+        </if>
+    </select>
+
+    <select id="countAllFoodsInfo" resultType="int">
+        select count(*)
+        from tb_food f, tb_food_type ft, tb_mer m
+        where f.ft_id = ft.ft_id AND f.m_id = m.m_id;
+    </select>
+
+    <resultMap id="tbFoodType" type="com.xindian.pojo.TbFoodType">
+        <id property="ftId" column="ft_id" />
+        <result property="ftName" column="ft_name" />
+    </resultMap>
+
+    <select id="queryAllTypes" resultMap="tbFoodType">
+        SELECT * FROM tb_food_type
+    </select>
+</mapper>

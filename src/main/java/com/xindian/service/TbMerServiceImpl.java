@@ -15,4 +15,14 @@ public class TbMerServiceImpl implements TbMerService {
     public TbMer queryMer(TbMer mer) {
         return merDao.queryMer(mer);
     }
+
+    @Override
+    public TbMer queryMerById(int mId) {
+        return merDao.queryMerById(mId);
+    }
+
+    @Override
+    public void updateMer(TbMer mer) {
+        merDao.updateMer(mer);
+    }
 }

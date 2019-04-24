@@ -1,5 +1,7 @@
 package com.xindian.pojo;
 
+import java.util.List;
+
 // 后台管理员用户
 public class TbMer {
 
@@ -9,6 +11,32 @@ public class TbMer {
     private String mName;
     private String mAddress;
     private String mPhone;
+    private String mIntro;
+
+
+    public TbMer() {
+    }
+
+    public TbMer(int mId, String mLoginId, String mPassword, String mName, String mAddress, String mPhone, String mIntro, int mIsAdmin, String mUrl) {
+        this.mId = mId;
+        this.mLoginId = mLoginId;
+        this.mPassword = mPassword;
+        this.mName = mName;
+        this.mAddress = mAddress;
+        this.mPhone = mPhone;
+        this.mIntro = mIntro;
+        this.mIsAdmin = mIsAdmin;
+        this.mUrl = mUrl;
+    }
+
+    public String getmIntro() {
+        return mIntro;
+    }
+
+    public void setmIntro(String mIntro) {
+        this.mIntro = mIntro;
+    }
+
     private int mIsAdmin;
     private String mUrl;
 
@@ -75,4 +103,5 @@ public class TbMer {
     public void setmUrl(String mUrl) {
         this.mUrl = mUrl;
     }
+
 }
