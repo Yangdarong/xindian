@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xindian.dao.TbOrderDao">
+    <resultMap id="tbOrderAllInfoResultMap" type="com.xindian.pojo.TbOrder">
+        <id property="oId" column="o_id" />
+        <result property="oState" column="o_state" />
+        <result property="oPayState" column="o_paystate" />
+        <result property="oCreateTime" column="o_createtime" />
+        <result property="oFinishTime" column="o_finishtime" />
+        <result property="oAddress" column="o_address" />
+        <result property="oNote" column="o_note" />
+
+        <association property="mer" javaType="com.xindian.pojo.TbMer">
+            <id property="mId" column="m_id" />
+            <result property="mName" column="m_name" />
+            <result property="mAddress" column="m_address" />
+            <result property="mPhone" column="m_phone" />
+            <result property="mIntro" column="m_intro" />
+            <result property="mUrl" column="m_url" />
+        </association>
+        
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+            <result property="uSignature" column="u_signature" />
+            <result property="uPhone" column="u_phone" />
+        </association>
+    </resultMap>
+
+    <resultMap id="tbOrderFoodResultMap" type="com.xindian.pojo.TbOrderFood">
+        <id property="ofId" column="of_id" />
+        <result property="ofAmount" column="of_amount" />
+
+        <association property="order" javaType="com.xindian.pojo.TbOrder">
+            <id property="oId" column="o_id" />
+        </association>
+        <association property="food" javaType="com.xindian.pojo.TbFood">
+            <id property="fId" column="f_id" />
+        </association>
+    </resultMap>
+
+    <!--查询订单是否被创建 条件：用户ID+商家ID+订单状态进行中-->
+    <select id="queryCreatedOrder" parameterType="TbOrder" resultMap="tbOrderAllInfoResultMap">
+        SELECT * FROM tb_order
+        WHERE u_id = #{uId} AND m_id = #{mId} AND o_state = 1
+    </select>
+
+    <!--创建一个全新的订单 参数：用户ID+商家ID -->
+    <insert id="createNewOrder" parameterType="TbOrder">
+        INSERT INTO tb_order (o_state, m_id, u_id, o_createtime)
+        VALUES (#{oState}, #{mId}, #{uId}, #{oCreateTime})
+    </insert>
+
+    <!-- 向新的订单中添加新的菜品 参数：订单ID+食物ID+初始数量1 -->
+    <insert id="addFoodToOrder">
+        INSERT INTO tb_order_food (o_id, f_id, of_amount)
+        VALUES (#{fId}, #{fId}, #{ofAmount})
+    </insert>
+</mapper>

@@ -2,9 +2,10 @@ package com.xindian.service;
 
 import com.xindian.dao.TbUserDao;
 import com.xindian.pojo.TbUser;
-import com.xindian.service.TbUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class TbUserServiceImpl implements TbUserService {
@@ -30,6 +31,21 @@ public class TbUserServiceImpl implements TbUserService {
     @Override
     public void updateUser(TbUser user) {
         userDao.updateUser(user);
+    }
+
+    @Override
+    public void updateLoginTime(TbUser user, Date date) {
+        userDao.updateLoginTime(user.getuId(), date);
+    }
+
+    @Override
+    public void updateUserState(TbUser user) {
+        userDao.updateUserState(user);
+    }
+
+    @Override
+    public void logout(TbUser user) {
+        userDao.logout(user);
     }
 
     @Override

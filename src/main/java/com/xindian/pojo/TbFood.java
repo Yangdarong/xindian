@@ -1,5 +1,7 @@
 package com.xindian.pojo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  *  菜品
  */
@@ -92,4 +94,5 @@ public class TbFood {
     public void setfDPrice(Float fDPrice) {
         this.fDPrice = fDPrice;
     }
+
 }

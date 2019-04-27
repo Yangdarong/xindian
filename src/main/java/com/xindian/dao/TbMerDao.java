@@ -9,4 +9,6 @@ public interface TbMerDao {
     void updateMer(TbMer mer);
     //
     TbMer queryMerById(int mId);
+
+    void changeMerPicture(TbMer mer);
 }

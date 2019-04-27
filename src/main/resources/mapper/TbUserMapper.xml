@@ -12,7 +12,6 @@
         <result property="uMail" column="u_email" />
         <result property="uPhone" column="u_phone" />
         <result property="uHeadPortrait" column="u_headportrait" />
-        <result property="uRegisterTime" column="u_registertime" />
         <result property="uLoginTime" column="u_logintime" />
         <result property="uUserStateId" column="u_userstateid" />
 
@@ -38,7 +37,7 @@
         u_signature = #{uSignature},
         u_sex = #{uSex},
         u_email = #{uMail},
-        u_phone = #{uPhone},
+        u_phone = #{uPhone}
 
         WHERE u_id = #{uId}
     </update>
@@ -52,6 +51,23 @@
     <update id="updateUserSex" parameterType="TbUser">
         UPDATE tb_user SET
         u_sex = #{uSex}
+        WHERE u_id = #{uId}
+    </update>
+
+    <update id="updateLoginTime">
+        UPDATE tb_user SET
+        u_logintime = #{uLoginTime}
+        WHERE u_id = #{uId}
+    </update>
+
+    <update id="updateUserState" parameterType="com.xindian.pojo.TbUser">
+        UPDATE tb_user SET
+        u_userstateid = 1
+        WHERE u_id = #{uId}
+    </update>
+    <update id="logout" parameterType="com.xindian.pojo.TbUser">
+        UPDATE tb_user SET
+            u_userstateid = 0
         WHERE u_id = #{uId}
     </update>
 </mapper>

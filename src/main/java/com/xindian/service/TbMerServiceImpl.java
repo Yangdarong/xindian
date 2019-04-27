@@ -25,4 +25,9 @@ public class TbMerServiceImpl implements TbMerService {
     public void updateMer(TbMer mer) {
         merDao.updateMer(mer);
     }
+
+    @Override
+    public void changeMerPicture(TbMer mer) {
+        merDao.changeMerPicture(mer);
+    }
 }

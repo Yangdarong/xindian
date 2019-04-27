@@ -5,8 +5,6 @@
 <mapper namespace="com.xindian.dao.TbFoodDao">
     <resultMap id="tbFoodAllInfoResultType" type="com.xindian.pojo.TbFood">
         <id property="fId" column="f_id" />
-        <!--<result property="ftId" column="ft_id" />-->
-        <!--<result property="mId" column="m_id" />-->
         <result property="fName" column="f_name" />
         <result property="fUrl" column="f_url" />
         <result property="fPrice" column="f_price" />
@@ -20,8 +18,33 @@
         <association property="mer" javaType="com.xindian.pojo.TbMer">
             <id property="mId" column="m_id" />
             <result property="mName" column="m_name" />
+            <result property="mUrl" column="m_url" />
+            <result property="mAddress" column="m_address" />
+            <result property="mPhone" column="m_phone" />
+            <result property="mIntro" column="m_intro" />
         </association>
     </resultMap>
+
+    <!--
+        查询所有菜(菜名+种类+商家+原价+折扣价+图片) 条件: ID
+    -->
+    <select id="getFoodById" resultMap="tbFoodAllInfoResultType">
+        select f.f_id, f.f_name, f.f_url, ft.ft_name,
+               m.m_name, m.m_url,f.f_price, f.f_dprice,
+               m.m_address, m.m_phone, m.m_intro, m.m_id, f.ft_id
+        from tb_food f, tb_food_type ft, tb_mer m
+        where f.ft_id = ft.ft_id AND f.m_id = m.m_id AND f.f_id = #{fId};
+    </select>
+
+    <!--
+        查询所有菜(菜名+种类+商家+原价+折扣价+图片) 条件: 种类
+    -->
+    <select id="queryFoodByFtId" resultMap="tbFoodAllInfoResultType">
+        select f.f_id, f.ft_id, f.f_name, f.f_url, ft.ft_name,
+                m.m_id, m.m_name, m.m_url,f.f_price, f.f_dprice
+        from tb_food f, tb_food_type ft, tb_mer m
+        where f.ft_id = ft.ft_id AND f.m_id = m.m_id AND f.ft_id = #{ftId};
+    </select>
 
     <select id="queryAllFoodsInfo" resultMap="tbFoodAllInfoResultType">
         select f.f_id, f.f_name, f.f_url, f.f_price, f.f_dprice, ft.ft_name, m.m_name
@@ -32,16 +55,17 @@
     <select id="queryAllFoodsInfoFindPage" resultMap="tbFoodAllInfoResultType" parameterType="Map">
         select f.f_id, f.f_name, f.f_url, f.f_price, f.f_dprice, ft.ft_name, m.m_name
         from tb_food f, tb_food_type ft, tb_mer m
-        where f.ft_id = ft.ft_id AND f.m_id = m.m_id
-        <if test="start != null and size != null">
+        <if test="start != null and size != null and mId != null">
+          where f.ft_id = ft.ft_id AND f.m_id = m.m_id AND  f.m_id = #{mId}
+
           limit #{start}, #{size}
         </if>
     </select>
 
-    <select id="countAllFoodsInfo" resultType="int">
+    <select id="countAllFoodsInfo" resultType="int" parameterType="int">
         select count(*)
         from tb_food f, tb_food_type ft, tb_mer m
-        where f.ft_id = ft.ft_id AND f.m_id = m.m_id;
+        where f.ft_id = ft.ft_id AND f.m_id = m.m_id AND f.m_id = #{mId};
     </select>
 
     <resultMap id="tbFoodType" type="com.xindian.pojo.TbFoodType">
@@ -52,4 +76,20 @@
     <select id="queryAllTypes" resultMap="tbFoodType">
         SELECT * FROM tb_food_type
     </select>
+
+    <select id="queryFoodById" parameterType="int" resultMap="tbFoodAllInfoResultType">
+        SELECT * FROM tb_food where f_id = #{fId}
+    </select>
+
+    <insert id="addFood" parameterType="com.xindian.pojo.TbFood">
+        INSERT into tb_food (f_name, f_url, f_price, f_dprice, ft_id, m_id) VALUES (#{fName}, #{fUrl}, #{fPrice}, #{fDPrice}, #{ftId}, #{mId})
+    </insert>
+
+    <update id="changeFoodPicture">
+        UPDATE tb_food SET f_url = #{fUrl} where f_id = #{fId}
+    </update>
+
+    <update id="editFoodInfo" parameterType="com.xindian.pojo.TbFood">
+        UPDATE tb_food SET f_name = #{fName}, f_price = #{fPrice}, f_dprice = #{fDPrice} where f_id = #{fId}
+    </update>
 </mapper>

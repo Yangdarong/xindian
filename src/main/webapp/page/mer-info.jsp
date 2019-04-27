@@ -52,7 +52,7 @@
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 页面模块 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                         <li><a href="#" class="am-cf"><span class="am-icon-check"></span> 店面资料<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-                        <li><a href="${pageContext.request.contextPath}/food/qureyFoods.do"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
+                        <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
                         <li><a href="admin-gallery.html"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
                         <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>
                         <%--<li><a href="admin-404.html"><span class="am-icon-bug"></span> 404</a></li>--%>
@@ -95,25 +95,68 @@
                         <div class="am-panel-bd">
                             <div class="am-g">
                                 <div class="am-u-md-4">
-                                    <img class="am-img-circle am-img-thumbnail" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80" alt=""/>
+                                    <img id="mer-pic" class="am-img-circle am-img-thumbnail" src="../${sessionScope.mer.mUrl}" alt=""/>
                                 </div>
                                 <div class="am-u-md-8">
                                     <p>上传头像让更多用户认识你。 </p>
-                                    <form class="am-form">
+                                    <form class="am-form" action="${pageContext.request.contextPath}/mer/editMerPic?mId=${sessionScope.mer.mId}" method="post" enctype="multipart/form-data">
                                         <div class="am-form-group">
-                                            <input type="file" id="user-pic">
+                                            <input type="file" id="user-pic" name="pictureFile" onchange="showPic(this)">
                                             <p class="am-form-help">请选择要上传的文件...</p>
-                                            <button type="button" class="am-btn am-btn-primary am-btn-xs">保存</button>
+                                            <button type="submit" class="am-btn am-btn-primary am-btn-xs">保存</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
+
+                <script>
+                    function showPic(obj) {
+                        var newPreview = document.getElementById('mer-pic');
+                        if (obj) {
+                            // ie 浏览器兼容
+                            if (window.navigator.userAgent.indexOf("MSIE") >= 1) {
+                                obj.select();
+                                newPreview.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);";
+                                var path = document.selection.createRange().text;
+                                var flag = judgeImgSuffix(path);
+                                if (flag) {
+                                    newPreview.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = document.selection.createRange().text;
+                                } else {
+                                    alert("要求图片格式为png,jpg,jpeg,bmp");
+                                }
+                                return;
+                            }  else {
+                                if (obj.files) {
+                                    //alert(obj.files.item(0).name);
+                                    if (judgeImgSuffix(obj.files.item(0).name)) {
+                                        newPreview.src = window.URL.createObjectURL(obj.files.item(0));
+                                        return;
+                                    } else {
+                                        alert("要求图片格式为png,jpg,jpeg,bmp");
+                                    }
+                                }
+
+                                return;
+                            }
+                        }
+
+                        function judgeImgSuffix(path) {
+                            var index = path.lastIndexOf('.');
+                            var suffix = "";
+                            if (index > 0) {
+                                suffix = path.substring(index + 1);
+                            }
+                            if ("png"==suffix || "jpg"==suffix || "jpeg"==suffix || "bmp"==suffix || "PNG"==suffix || "JPG"==suffix || "JPEG"==suffix || "BMP"==suffix) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                </script>
 
                 <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
                     <form id="updateinfo" name="updateinfo" method="POST" class="am-form am-form-horizontal" action="${pageContext.request.contextPath}/mer/updateMer.do?mId=${sessionScope.mer.mId}">

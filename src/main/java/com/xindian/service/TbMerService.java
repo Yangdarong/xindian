@@ -9,4 +9,6 @@ public interface TbMerService {
     TbMer queryMerById(int mId);
 
     void updateMer(TbMer mer);
+
+    void changeMerPicture(TbMer mer);
 }

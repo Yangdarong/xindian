@@ -1,25 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 杨
-  Date: 2019/4/24
-  Time: 7:40
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>菜品编辑</title>
-    <meta name="description" content="这是一个 table 页面">
-    <meta name="keywords" content="table">
+    <title>Amaze UI Admin user Examples</title>
+    <meta name="description" content="这是一个 user 页面">
+    <meta name="keywords" content="user">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="icon" type="image/png" href="assets/i/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
 </head>
@@ -35,15 +28,12 @@
         <small>商家后台系统</small>
     </div>
 
-    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
-            data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
-            class="am-icon-bars"></span></button>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
-            <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span
-                    class="am-badge am-badge-warning">5</span></a></li>
+            <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span class="am-badge am-badge-warning">5</span></a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
@@ -54,8 +44,7 @@
                     <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
-            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span
-                    class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
         </ul>
     </div>
 </header>
@@ -107,130 +96,134 @@
     <div class="admin-content">
         <div class="admin-content-body">
             <div class="am-cf am-padding am-padding-bottom-0">
-                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">菜品编辑</strong> /
-                    <small>Edit</small>
-                </div>
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">编辑菜品</strong> / <small>Edit Food</small></div>
             </div>
 
-            <hr>
+            <hr/>
 
             <div class="am-g">
-                <div class="am-u-sm-12 am-u-md-6">
-                    <div class="am-btn-toolbar">
-                        <div class="am-btn-group am-btn-group-xs">
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增
-                            </button>
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> 保存
-                            </button>
-
-                            <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span> 删除
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="am-u-sm-12 am-u-md-3">
-                    <div class="am-form-group">
-                        <label>
-                            <select data-am-selected="{btnSize: 'sm'}">
-                                <option value="0">所有类别</option>
-                                <c:forEach items='${sessionScope.types}' var="type">
-                                    <option value="${type.ftId}">${type.ftName}</option>
-                                </c:forEach>
-                            </select>
-                        </label>
-                    </div>
-                </div>
-                <div class="am-u-sm-12 am-u-md-3">
-                    <div class="am-input-group am-input-group-sm">
-                        <input type="text" class="am-form-field">
-                        <span class="am-input-group-btn">
-            <button class="am-btn am-btn-default" type="button">搜索</button>
-          </span>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                alert(111);
-                var foods = '${sessionScope.pageBean.lists}';
-                alert(foods);
-            </script>
-
-            <div class="am-g">
-                <div class="am-u-sm-12">
-                    <form class="am-form">
-                        <table class="am-table am-table-striped am-table-hover table-main">
-                            <thead>
-                            <tr>
-                                <th class="table-check"><input type="checkbox"/></th>
-                                <th class="table-id">ID</th>
-                                <th class="table-title">菜品名</th>
-                                <th class="table-type">类别</th>
-                                <th class="table-author am-hide-sm-only">商家</th>
-                                <th class="table-type">原价</th>
-                                <th class="table-author am-hide-sm-only">折扣价</th>
-                                <th class="table-set">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${sessionScope.pageBean.lists}" var="food">
-                                <tr>
-                                    <td><input type="checkbox"/></td>
-                                    <td>${food.fId}</td>
-                                    <td><a href="#">${food.fName}</a></td>
-                                    <td>${food.foodType.ftName}</td>
-                                    <td class="am-hide-sm-only">${food.mer.mName}</td>
-                                    <td>${food.fPrice}</td>
-                                    <td class="am-hide-sm-only">${food.fDPrice}</td>
-                                    <td>
-                                        <div class="am-btn-toolbar">
-                                            <div class="am-btn-group am-btn-group-xs">
-                                                <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span
-                                                        class="am-icon-pencil-square-o"></span> 编辑
-                                                </button>
-                                                <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                                    <span class="am-icon-trash-o"></span> 删除
-                                                </button>
-                                            </div>
+                <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+                    <div class="am-panel am-panel-default">
+                        <div class="am-panel-bd">
+                            <div class="am-g">
+                                <div class="am-u-md-4">
+                                    <img id="food-pic" class="am-img-circle am-img-thumbnail" src="../${sessionScope.tbFood.fUrl}" alt=""/>
+                                </div>
+                                <div class="am-u-md-8">
+                                    <p>请使用本地上传图片。 </p>
+                                    <form class="am-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/food/editFoodPic?fId=${sessionScope.tbFood.fId}">
+                                        <div class="am-form-group">
+                                            <input type="file" id="user-pic" name="pictureFile" onchange="showPic(this)">
+                                            <p class="am-form-help">请选择要上传的文件...</p>
+                                            <button type="submit" class="am-btn am-btn-primary am-btn-xs">保存</button>
                                         </div>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                        <div class="am-cf">
-                            共 ${sessionScope.pageBean.totalCount} 条记录
-                            <div class="am-fr">
-                                <ul class="am-pagination">
-                                    <li class="am-disabled"><a href="#">«</a></li>
-                                    <li class="am-active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li><a href="#">»</a></li>
-                                </ul>
+                                    </form>
+
+                                    <script>
+                                        function showPic(obj) {
+                                            var newPreview = document.getElementById('food-pic');
+                                            if (obj) {
+                                                // ie 浏览器兼容
+                                                if (window.navigator.userAgent.indexOf("MSIE") >= 1) {
+                                                    obj.select();
+                                                    newPreview.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);";
+                                                    var path = document.selection.createRange().text;
+                                                    var flag = judgeImgSuffix(path);
+                                                    if (flag) {
+                                                        newPreview.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = document.selection.createRange().text;
+                                                    } else {
+                                                        alert("要求图片格式为png,jpg,jpeg,bmp");
+                                                    }
+                                                    return;
+                                                }  else {
+                                                    if (obj.files) {
+                                                        //alert(obj.files.item(0).name);
+                                                        if (judgeImgSuffix(obj.files.item(0).name)) {
+                                                            newPreview.src = window.URL.createObjectURL(obj.files.item(0));
+                                                            return;
+                                                        } else {
+                                                            alert("要求图片格式为png,jpg,jpeg,bmp");
+                                                        }
+                                                    }
+
+                                                    return;
+                                                }
+                                            }
+
+                                            function judgeImgSuffix(path) {
+                                                var index = path.lastIndexOf('.');
+                                                var suffix = "";
+                                                if (index > 0) {
+                                                    suffix = path.substring(index + 1);
+                                                }
+                                                if ("png"==suffix || "jpg"==suffix || "jpeg"==suffix || "bmp"==suffix || "PNG"==suffix || "JPG"==suffix || "JPEG"==suffix || "BMP"==suffix) {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            }
+                                        }
+                                    </script>
+                                </div>
                             </div>
                         </div>
-                        <hr/>
-                        <p>注：为保障菜品信息的正确性,建议您使用PC端进行操作!</p>
-                    </form>
+                    </div>
                 </div>
 
+                <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+                    <form class="am-form am-form-horizontal" method="post" action="${pageContext.request.contextPath}/food/editFoodInfo?merId=${sessionScope.tbFood.mer.mId}">
+                        <div class="am-form-group">
+                            <label for="food-id" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>编号 / ID</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="food-id" name="fId" value="${sessionScope.tbFood.fId}" readonly="readonly">
+
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-name" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>名字 / Name</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="user-name" name="fName" value="${sessionScope.tbFood.fName}">
+
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="food-price" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>原价 / Price</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="food-price" name="fPrice" value="${sessionScope.tbFood.fPrice}">
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="food-dprice" class="am-u-sm-3 am-form-label">折扣价 / DPrice</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" id="food-dprice" name="fDPrice" value="${sessionScope.tbFood.fDPrice}">
+                            </div>
+                        </div>
+
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="submit" class="am-btn am-btn-primary">保存修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <footer class="admin-content-footer">
             <hr>
-            <p class="am-padding-left">© 2019 AllMobilize, Inc. Licensed under MIT license.</p>
+            <p class="am-padding-left">© 2014 AllMobilize, Inc. Licensed under MIT license.</p>
         </footer>
 
     </div>
     <!-- content end -->
+
 </div>
 
-<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"
-   data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
 <footer>
     <hr>
@@ -238,7 +231,7 @@
 </footer>
 
 <!--[if lt IE 9]>
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
 <script src="assets/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
@@ -247,6 +240,7 @@
 <script src="assets/js/jquery.min.js"></script>
 <!--<![endif]-->
 <script src="assets/js/amazeui.min.js"></script>
+
 <script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -57,7 +57,7 @@
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 页面模块 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                         <li><a href="${pageContext.request.contextPath}/page/merInfo" class="am-cf"><span class="am-icon-check"></span> 店面资料<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-                        <li><a href="${pageContext.request.contextPath}/food/qureyFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
+                        <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
                         <li><a href="admin-gallery.html"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
                         <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>
                         <%--<li><a href="admin-404.html"><span class="am-icon-bug"></span> 404</a></li>--%>

@@ -31,12 +31,18 @@ public class PageController {
     // 信息编辑
     @RequestMapping("/page/merInfo")
     public String editInfo() {
-        return "user-info";
+        return "mer-info";
     }
 
     // 菜单管理
-    @RequestMapping("page/merFood")
+    @RequestMapping("/page/merFood")
     public String editFoods() {
+        return "food-info";
+    }
+
+    // 编辑菜品
+    @RequestMapping("page/editFood")
+    public String addFoods() {
         return "food-edit";
     }
 

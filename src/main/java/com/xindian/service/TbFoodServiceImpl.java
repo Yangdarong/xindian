@@ -16,13 +16,14 @@ public class TbFoodServiceImpl implements TbFoodService {
     @Autowired
     private TbFoodDao foodDao;
 
+
     @Override
     public List<TbFood> queryAllFoodsInfo() {
-        return foodDao.queryAllFoodsInfo();
+        return null;
     }
 
     @Override
-    public PageBean<TbFood> queryAllFoodsInfoFindPage(int currentPage) {
+    public PageBean<TbFood> queryAllFoodsInfoFindPage(int currentPage, int mId) {
         HashMap<String, Object> map = new HashMap<>();
         PageBean<TbFood> pageBean = new PageBean<>();
 
@@ -32,7 +33,7 @@ public class TbFoodServiceImpl implements TbFoodService {
         pageBean.setPageSize(pageSize);
 
         // 封装总记录数
-        int totalCount = foodDao.countAllFoodsInfo();
+        int totalCount = foodDao.countAllFoodsInfo(mId);
         pageBean.setTotalCount(totalCount);
 
         // 封装总页数
@@ -42,6 +43,7 @@ public class TbFoodServiceImpl implements TbFoodService {
 
         map.put("start", (currentPage - 1) * pageSize);
         map.put("size", pageBean.getPageSize());
+        map.put("mId", mId);
         // 封装每页显示的数据
         List<TbFood> foods = foodDao.queryAllFoodsInfoFindPage(map);
         pageBean.setLists(foods);
@@ -52,5 +54,36 @@ public class TbFoodServiceImpl implements TbFoodService {
     @Override
     public List<TbFoodType> queryAllTypes() {
         return foodDao.queryAllTypes();
+    }
+
+    @Override
+    public void addFood(TbFood food) {
+        foodDao.addFood(food);
+    }
+
+    @Override
+    public TbFood queryFoodById(int fid) {
+        return foodDao.queryFoodById(fid);
+    }
+
+    @Override
+    public void changeFoodPicture(int fId, String fUrl) {
+        foodDao.changeFoodPicture(fId, fUrl);
+    }
+
+    @Override
+    public void editFoodInfo(TbFood food) {
+        foodDao.editFoodInfo(food);
+    }
+
+
+    @Override
+    public List<TbFood> queryFoodByFtId(int ftId) {
+        return foodDao.queryFoodByFtId(ftId);
+    }
+
+    @Override
+    public TbFood getFoodById(int fId) {
+        return foodDao.getFoodById(fId);
     }
 }

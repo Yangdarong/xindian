@@ -31,4 +31,10 @@
           m_Intro = #{mIntro}
         WHERE m_id = #{mId}
     </update>
+
+    <update id="changeMerPicture" parameterType="TbMer">
+        UPDATE tb_mer SET
+          m_url = #{mUrl}
+        WHERE m_id = #{mId}
+    </update>
 </mapper>

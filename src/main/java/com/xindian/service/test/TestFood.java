@@ -25,10 +25,9 @@ public class TestFood {
     }
 
     @Test
-    public void testPage() {    // 实现分页
-        PageBean<TbFood> pageBean = service.queryAllFoodsInfoFindPage(1);
-
-        System.out.println(pageBean.getLists().size());
+    public void testQueryFoodById() {    // 实现分页
+        TbFood food = service.queryFoodById(21);
+        System.out.println(food.getfName());
     }
 }
 

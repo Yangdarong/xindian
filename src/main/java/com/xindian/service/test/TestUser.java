@@ -2,12 +2,16 @@ package com.xindian.service.test;
 
 import com.xindian.pojo.TbUser;
 import com.xindian.service.TbUserService;
+import com.xindian.utils.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -59,6 +63,11 @@ public class TestUser {
         user.setuSignature("yangxr");
 
         userService.updateUser(user);
+    }
+
+    @Test
+    public void testPic() throws FileNotFoundException {
+        System.out.println(FileUtils.getPicType(new FileInputStream(new File("E:\\myStudy\\tmp\\TbItemMapper.java"))));
     }
 
 }

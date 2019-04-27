@@ -1,8 +1,7 @@
 package com.xindian.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *  用户表
@@ -25,9 +24,7 @@ public class TbUser {
 
     private String uHeadPortrait;
 
-    private Date uRegisterTime;
-
-    private Date uLoginTime;
+    private Timestamp uLoginTime;
 
     private int uUserStateId;
 
@@ -95,19 +92,11 @@ public class TbUser {
         this.uHeadPortrait = uHeadPortrait;
     }
 
-    public Date getuRegisterTime() {
-        return uRegisterTime;
-    }
-
-    public void setuRegisterTime(Date uRegisterTime) {
-        this.uRegisterTime = uRegisterTime;
-    }
-
-    public Date getuLoginTime() {
+    public Timestamp getuLoginTime() {
         return uLoginTime;
     }
 
-    public void setuLoginTime(Date uLoginTime) {
+    public void setuLoginTime(Timestamp uLoginTime) {
         this.uLoginTime = uLoginTime;
     }
 

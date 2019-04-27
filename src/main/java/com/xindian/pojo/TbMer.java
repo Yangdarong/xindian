@@ -12,7 +12,8 @@ public class TbMer {
     private String mAddress;
     private String mPhone;
     private String mIntro;
-
+    private String mUrl;
+    private int mIsAdmin;
 
     public TbMer() {
     }
@@ -37,8 +38,6 @@ public class TbMer {
         this.mIntro = mIntro;
     }
 
-    private int mIsAdmin;
-    private String mUrl;
 
     public int getmId() {
         return mId;

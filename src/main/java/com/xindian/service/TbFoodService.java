@@ -11,8 +11,22 @@ public interface TbFoodService {
     // 查询所有菜(菜名+种类+商家+原价+折扣价)
     List<TbFood> queryAllFoodsInfo();
     // 返回分页数据
-    PageBean<TbFood> queryAllFoodsInfoFindPage(int currentPage);
+    PageBean<TbFood> queryAllFoodsInfoFindPage(int currentPage, int mId);
+    // 分页返回商家自己的菜品
+    //PageBean<TbFood> queryFoodsInfoFindPageByMerId(int currentPage, int merId);
 
     // 返回菜品种类
     List<TbFoodType> queryAllTypes();
+
+    void addFood(TbFood food);
+
+    TbFood queryFoodById(int fid);
+
+    void changeFoodPicture(int fId, String fUrl);
+
+    void editFoodInfo(TbFood food);
+
+    List<TbFood> queryFoodByFtId(int ftId);
+
+    TbFood getFoodById(int fId);
 }

@@ -4,13 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.MerLoginResultType;
 import com.xindian.pojo.TbMer;
 import com.xindian.service.TbMerService;
+import com.xindian.utils.FileUtils;
+import com.xindian.utils.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 @Controller
@@ -20,6 +25,12 @@ public class MerController {
     @Autowired
     private TbMerService service;
 
+    /**
+     * 后台系统登录
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/queryMer.do")
     public String queryMer(HttpServletRequest request, HttpServletResponse response) {
 
@@ -54,6 +65,31 @@ public class MerController {
         return "login-fail";
     }
 
+    /**
+     * 修改商店的头像
+     * @param mer
+     * @param request
+     * @param pictureFile
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("/editMerPic")
+    public String changeMerPicture(TbMer mer,HttpServletRequest request, MultipartFile pictureFile) throws IOException {
+        String mUrl = FileUtils.uploadPicture(pictureFile, request, UrlUtils.TYPE_MER);
+        mer.setmUrl(mUrl);
+        service.changeMerPicture(mer);
+        mer = service.queryMerById(mer.getmId());
+        addToSession(request.getSession(), mer);
+
+        return "redirect:/page/merInfo";
+    }
+
+    /**
+     * 后台系统用户修改信息
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/updateMer.do")
     public String updateMer(HttpServletRequest request, HttpServletResponse response) {
         String mId = request.getParameter("mId");
@@ -81,7 +117,7 @@ public class MerController {
         return "redirect:/loginFail";
     }
 
-    private void addToSession(HttpSession session, TbMer mer) {
+    private void addToSession(@NonNull HttpSession session, @NonNull TbMer mer) {
 //                session.setAttribute("mer", mer);
         if (session.getAttribute("mer") == null) {  // 如果为空则添加
             session.setAttribute("mer", mer);
