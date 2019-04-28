@@ -1,6 +1,7 @@
 package com.xindian.controller;
 
 import com.xindian.pojo.TbOrder;
+import com.xindian.pojo.TbOrderFood;
 import com.xindian.service.TbOrderService;
 import com.xindian.utils.ValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +51,17 @@ public class OrderController {
             // 2.1 更新数据到实体
             order = service.queryCreatedOrder(order);
             // 3. 分析食物是否重复
-            if (true) {                                 // 已经添加过这个菜品
-
-            } else {                                    // 没有添加过这个菜品
-
+            TbOrderFood orderFood = service.queryOrderAndFood(order.getoId(), fId);
+            if (orderFood != null) {                                 // 已经添加过这个菜品
+                // 4.1 该订单食物数量+1
+                service.setOrderWithFoodAmount(orderFood);
+            } else {                                                 // 没有添加过这个菜品
+                // 4.2 创建该订单食物
+                service.createNewOrderFood(order.getoId(), fId);
             }
         }
+
+        // 返回 Common JSON 数据
     }
 
     /*-----------------------------管理端-----------------------------------*/

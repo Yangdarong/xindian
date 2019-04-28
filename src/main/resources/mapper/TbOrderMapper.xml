@@ -57,4 +57,9 @@
         INSERT INTO tb_order_food (o_id, f_id, of_amount)
         VALUES (#{fId}, #{fId}, #{ofAmount})
     </insert>
+
+    <select id="queryOrderAndFood" resultMap="tbOrderFoodResultMap">
+        SELECT * FROM tb_order_food
+        WHERE o_id = #{oId} AND f_id = #{fId}
+    </select>
 </mapper>

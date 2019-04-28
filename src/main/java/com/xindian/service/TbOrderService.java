@@ -1,6 +1,7 @@
 package com.xindian.service;
 
 import com.xindian.pojo.TbOrder;
+import com.xindian.pojo.TbOrderFood;
 
 public interface TbOrderService {
 
@@ -24,4 +25,25 @@ public interface TbOrderService {
      * @param ofAmount
      */
     void addFoodToOrder(int oId, int fId, int ofAmount);
+
+    /**
+     * 判断订单是否有已经添加过的食物
+     * @param oId
+     * @param fId
+     * @return
+     */
+    TbOrderFood queryOrderAndFood(int oId, int fId);
+
+    /**
+     * 更新该订单食物数量+1
+     * @param orderFood
+     */
+    void setOrderWithFoodAmount(TbOrderFood orderFood);
+
+    /**
+     * 该订单新增新的食物
+     * @param oId
+     * @param fId
+     */
+    void createNewOrderFood(int oId, int fId);
 }
