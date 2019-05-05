@@ -1,8 +1,11 @@
 package com.xindian.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xindian.common.MerFoodsResultType;
 import com.xindian.common.MerLoginResultType;
+import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
+import com.xindian.service.TbFoodService;
 import com.xindian.service.TbMerService;
 import com.xindian.utils.FileUtils;
 import com.xindian.utils.UrlUtils;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @Controller
 @RequestMapping("/mer")
@@ -25,6 +29,36 @@ public class MerController {
     @Autowired
     private TbMerService service;
 
+    /*-----------------------------安卓端-----------------------------------*/
+    @RequestMapping("/queryMerAndFoods.json")
+    public void queryMerAndFoods(HttpServletRequest request, HttpServletResponse response, TbMer mer) {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        mer = service.queryMerById(mer.getmId());
+        List<TbFood> foods = service.queryFoodsByMid(mer.getmId());
+        MerFoodsResultType result = new MerFoodsResultType();
+        PrintWriter out = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            out = response.getWriter();
+            if (mer != null) {
+                result.setState(1);
+                result.setMer(mer);
+                result.setFoods(foods);
+            } else {
+                result.setState(0);
+                result.setMer(null);
+                result.setFoods(null);
+            }
+            out.write(mapper.writeValueAsString(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /*-----------------------------管理端-----------------------------------*/
     /**
      * 后台系统登录
      * @param request

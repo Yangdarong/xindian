@@ -15,6 +15,12 @@
         <result property="mUrl" column="m_url" />
     </resultMap>
 
+    <resultMap id="tbFoodIntroResultMap" type="TbFood">
+        <id property="fId" column="f_id" />
+        <result property="fName" column="f_name" />
+        <result property="fUrl" column="f_url" />
+    </resultMap>
+
     <select id="queryMerById" parameterType="int" resultMap="tbMerResultType">
         SELECT * FROM tb_mer WHERE m_id = #{mId}
     </select>
@@ -37,4 +43,8 @@
           m_url = #{mUrl}
         WHERE m_id = #{mId}
     </update>
+
+    <select id="queryFoodsByMid" resultMap="tbFoodIntroResultMap">
+        SELECT * from tb_food where m_id = #{mId};
+    </select>
 </mapper>

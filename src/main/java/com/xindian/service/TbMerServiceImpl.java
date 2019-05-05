@@ -1,9 +1,12 @@
 package com.xindian.service;
 
 import com.xindian.dao.TbMerDao;
+import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TbMerServiceImpl implements TbMerService {
@@ -29,5 +32,10 @@ public class TbMerServiceImpl implements TbMerService {
     @Override
     public void changeMerPicture(TbMer mer) {
         merDao.changeMerPicture(mer);
+    }
+
+    @Override
+    public List<TbFood> queryFoodsByMid(int mId) {
+        return merDao.queryFoodsByMid(mId);
     }
 }

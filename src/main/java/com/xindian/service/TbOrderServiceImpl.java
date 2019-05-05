@@ -6,6 +6,8 @@ import com.xindian.pojo.TbOrderFood;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TbOrderServiceImpl implements TbOrderService {
 
@@ -41,4 +43,15 @@ public class TbOrderServiceImpl implements TbOrderService {
     public void createNewOrderFood(int oId, int fId) {
 
     }
+
+    @Override
+    public List<TbOrder> queryBeingOrderByUId(int uId, int oState) {
+        return orderDao.queryBeingOrderByUId(uId, oState);
+    }
+
+    @Override
+    public List<TbOrderFood> queryFoodsByOrder(TbOrder order) {
+        return orderDao.queryFoodsByOrder(order);
+    }
+
 }

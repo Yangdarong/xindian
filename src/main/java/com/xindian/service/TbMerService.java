@@ -1,6 +1,9 @@
 package com.xindian.service;
 
+import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
+
+import java.util.List;
 
 public interface TbMerService {
 
@@ -11,4 +14,6 @@ public interface TbMerService {
     void updateMer(TbMer mer);
 
     void changeMerPicture(TbMer mer);
+
+    List<TbFood> queryFoodsByMid(int mId);
 }

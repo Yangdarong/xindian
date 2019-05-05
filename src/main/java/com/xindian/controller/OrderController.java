@@ -1,7 +1,10 @@
 package com.xindian.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xindian.common.OrderFoodsResultType;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
+import com.xindian.pojo.TbUser;
 import com.xindian.service.TbOrderService;
 import com.xindian.utils.ValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -28,7 +34,7 @@ public class OrderController {
      * @param response
      * @param order
      */
-    @RequestMapping("/addBuyCar.json")
+    @RequestMapping("/addBuyCar.do")
     public void addFoodToOrder(HttpServletRequest request, HttpServletResponse response, TbOrder order) {
         // 1 判断是否有正在进行的订单(对商家) :
         // 1.1 接收点单食物ID
@@ -62,6 +68,52 @@ public class OrderController {
         }
 
         // 返回 Common JSON 数据
+    }
+
+    /**
+     * 获取用户的订单,规定用户的订单至多存在一个是进行中的状态
+     *
+     * @param response
+     * @param request
+     * @param user
+     */
+    @RequestMapping("/queryBayCar.json")
+    public void queryOrderWithFoods(HttpServletResponse response, HttpServletRequest request, TbUser user) {
+        // 1、 通过用户信息查询订单表
+        List<TbOrder> orders = service.queryBeingOrderByUId(user.getuId(), 1);
+        if (orders.size() != 0) {    // 当前存在进行中的订单，
+            // 返回订单信息
+            List<TbOrderFood> orderFoods = new ArrayList<>();
+            for (TbOrder order : orders) {
+                orderFoods.addAll(service.queryFoodsByOrder(order));
+            }
+            // 返回所属的菜单信息
+            OrderFoodsResultType result = new OrderFoodsResultType();
+            PrintWriter out = null;
+            ObjectMapper mapper = new ObjectMapper();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            try {
+                out = response.getWriter();
+                if (orders.size() != 0 && orderFoods.size() != 0) {
+                    result.setState(1);
+                    result.setOrders(orders);
+                    result.setOrderFoods(orderFoods);
+                } else {
+                    result.setState(0);
+                    result.setOrders(null);
+                    result.setOrderFoods(null);
+                }
+                out.write(mapper.writeValueAsString(result));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            // 直接返回没有内容
+        }
+
     }
 
     /*-----------------------------管理端-----------------------------------*/

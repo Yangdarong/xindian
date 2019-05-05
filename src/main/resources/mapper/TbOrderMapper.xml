@@ -37,6 +37,8 @@
         </association>
         <association property="food" javaType="com.xindian.pojo.TbFood">
             <id property="fId" column="f_id" />
+            <result property="fName" column="f_name" />
+            <result property="fUrl" column="f_url" />
         </association>
     </resultMap>
 
@@ -61,5 +63,21 @@
     <select id="queryOrderAndFood" resultMap="tbOrderFoodResultMap">
         SELECT * FROM tb_order_food
         WHERE o_id = #{oId} AND f_id = #{fId}
+    </select>
+
+    <select id="queryBeingOrderByUId" resultMap="tbOrderAllInfoResultMap">
+        select
+            o.o_id, o.o_state, m.m_id, m.m_name,
+            m.m_url, u.u_id, u.u_signature, u.u_phone
+        from tb_order o, tb_mer m, tb_user u
+        where o.u_id = u.u_id and o.m_id = m.m_id and o.u_id = #{uId} and o.o_state = #{oState};
+    </select>
+
+    <select id="queryFoodsByOrder" resultMap="tbOrderFoodResultMap" parameterType="TbOrder">
+        select
+            o.o_id, o.o_state, f.f_id, f.f_name,
+            f.f_url, fo.of_amount
+        from tb_order o, tb_food f, tb_order_food fo
+        where o.o_id = fo.o_id and f.f_id = fo.f_id and o.o_id = #{oId};
     </select>
 </mapper>

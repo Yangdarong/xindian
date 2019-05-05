@@ -3,6 +3,8 @@ package com.xindian.service;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 
+import java.util.List;
+
 public interface TbOrderService {
 
     /**
@@ -46,4 +48,8 @@ public interface TbOrderService {
      * @param fId
      */
     void createNewOrderFood(int oId, int fId);
+
+    List<TbOrder> queryBeingOrderByUId(int uId, int oState);
+
+    List<TbOrderFood> queryFoodsByOrder(TbOrder order);
 }
