@@ -80,4 +80,16 @@
         from tb_order o, tb_food f, tb_order_food fo
         where o.o_id = fo.o_id and f.f_id = fo.f_id and o.o_id = #{oId};
     </select>
+
+    <!-- 更新订单数量 -->
+    <update id="addOrderFoodAmount" parameterType="TbOrderFood">
+        update tb_order_food
+        SET of_amount = of_amount + 1
+        WHERE o_id = #{oId} and f_id = #{f_id}
+    </update>
+    <update id="subOrderFoodAmount" parameterType="TbOrderFood">
+        update tb_order_food
+        SET of_amount = of_amount - 1
+        WHERE o_id = #{oId} and f_id = #{f_id}
+    </update>
 </mapper>

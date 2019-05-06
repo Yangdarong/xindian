@@ -1,6 +1,7 @@
 package com.xindian.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xindian.common.CommonResultType;
 import com.xindian.common.FoodResultType;
 import com.xindian.common.FoodsResultType;
 import com.xindian.common.UserResultType;
@@ -17,10 +18,33 @@ public class UrlUtils {
     public static final String TYPE_USER = "users";
 
     /**
+     * 返回标准JSON信息
+     * @param response  response 响应(固定)
+     * @param state     设置状态码
+     * @param message   设置消息内容
+     */
+    public static void sendJsonData(HttpServletResponse response, int state, String message) {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        CommonResultType resultType = new CommonResultType();
+        try {
+            out = response.getWriter();
+            resultType.setState(state);
+            resultType.setMessage(message);
+            out.write(mapper.writeValueAsString(resultType));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 封装成JSON对象,通过输入流发送请求
      * @param response  response 响应(固定)
      * @param result    JSON 模板
-     * @param obj       需要封装的数据
+     * @param obj       需要封装的数据 单个或单条数据
      */
     public static void sendJsonData(HttpServletResponse response, Object result, Object obj) {
         response.setContentType("application/json");

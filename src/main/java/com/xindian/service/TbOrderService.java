@@ -43,6 +43,12 @@ public interface TbOrderService {
     void setOrderWithFoodAmount(TbOrderFood orderFood);
 
     /**
+     * 更新该订单菜品数量-1
+     * @param orderFood
+     */
+    void subOrderWithFoodAmount(TbOrderFood orderFood);
+
+    /**
      * 该订单新增新的食物
      * @param oId
      * @param fId
@@ -52,4 +58,12 @@ public interface TbOrderService {
     List<TbOrder> queryBeingOrderByUId(int uId, int oState);
 
     List<TbOrderFood> queryFoodsByOrder(TbOrder order);
+
+    void deleteOrder(TbOrderFood orderFood);
+
+    int queryFoodsCountByOId(TbOrderFood orderFood);
+
+    void deleteOrderFood(TbOrderFood orderFood);
+
+    void deleteOrderFoods(TbOrderFood orderFood);
 }

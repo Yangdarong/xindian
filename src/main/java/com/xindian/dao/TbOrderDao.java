@@ -18,4 +18,8 @@ public interface TbOrderDao {
     List<TbOrder> queryBeingOrderByUId(@Param("uId") int uId, @Param("oState") int oState);
 
     List<TbOrderFood> queryFoodsByOrder(TbOrder order);
+
+    void addOrderFoodAmount(TbOrderFood orderFood);
+
+    void subOrderFoodAmount(TbOrderFood orderFood);
 }

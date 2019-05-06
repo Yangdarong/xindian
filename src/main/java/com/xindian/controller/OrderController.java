@@ -2,10 +2,12 @@ package com.xindian.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.OrderFoodsResultType;
+import com.xindian.pojo.TbFoodType;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 import com.xindian.pojo.TbUser;
 import com.xindian.service.TbOrderService;
+import com.xindian.utils.UrlUtils;
 import com.xindian.utils.ValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ public class OrderController {
 
     @Autowired
     private TbOrderService service;
+
+    private String message;
+    private int state = 0;
 
     /*-----------------------------安卓端-----------------------------------*/
 
@@ -51,6 +56,8 @@ public class OrderController {
 
             // 3. 添加食物ID进入订单
             service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
+            state = 1;
+            message = "创建新订单";
         } else {                                        // 订单创建
             //System.out.println("将新的菜添加到订单列表");
             // 2. 将食物添加到订单
@@ -61,13 +68,18 @@ public class OrderController {
             if (orderFood != null) {                                 // 已经添加过这个菜品
                 // 4.1 该订单食物数量+1
                 service.setOrderWithFoodAmount(orderFood);
+                state = 2;
+                message = "更新菜品数量";
             } else {                                                 // 没有添加过这个菜品
                 // 4.2 创建该订单食物
                 service.createNewOrderFood(order.getoId(), fId);
+                state = 3;
+                message = "添加新菜品";
             }
         }
 
         // 返回 Common JSON 数据
+        UrlUtils.sendJsonData(response, state, message);
     }
 
     /**
@@ -81,6 +93,7 @@ public class OrderController {
     public void queryOrderWithFoods(HttpServletResponse response, HttpServletRequest request, TbUser user) {
         // 1、 通过用户信息查询订单表
         List<TbOrder> orders = service.queryBeingOrderByUId(user.getuId(), 1);
+        OrderFoodsResultType result = new OrderFoodsResultType();
         if (orders.size() != 0) {    // 当前存在进行中的订单，
             // 返回订单信息
             List<TbOrderFood> orderFoods = new ArrayList<>();
@@ -88,7 +101,7 @@ public class OrderController {
                 orderFoods.addAll(service.queryFoodsByOrder(order));
             }
             // 返回所属的菜单信息
-            OrderFoodsResultType result = new OrderFoodsResultType();
+
             PrintWriter out = null;
             ObjectMapper mapper = new ObjectMapper();
             response.setContentType("application/json");
@@ -96,24 +109,87 @@ public class OrderController {
 
             try {
                 out = response.getWriter();
-                if (orders.size() != 0 && orderFoods.size() != 0) {
+
                     result.setState(1);
                     result.setOrders(orders);
                     result.setOrderFoods(orderFoods);
-                } else {
-                    result.setState(0);
-                    result.setOrders(null);
-                    result.setOrderFoods(null);
-                }
+
                 out.write(mapper.writeValueAsString(result));
             } catch (Exception e) {
                 e.printStackTrace();
+                result.setState(0);
+                result.setOrders(null);
+                result.setOrderFoods(null);
             }
 
         } else {
             // 直接返回没有内容
+            result.setState(0);
+            result.setOrders(null);
+            result.setOrderFoods(null);
         }
 
+    }
+
+    /**
+     * 菜品数量加一
+     * @param request
+     * @param response
+     * @param orderFood
+     */
+    @RequestMapping("/addFoodAmount.json")
+    public void addOrderFoodAmount(HttpServletRequest request, HttpServletResponse response, TbOrderFood orderFood) {
+        state = 1;
+        message = "数目加1";
+        service.setOrderWithFoodAmount(orderFood);
+        UrlUtils.sendJsonData(response, state, message);
+    }
+
+    /**
+     * 菜品数量减一
+     * @param response
+     * @param orderFood
+     */
+    @RequestMapping("/subFoodAmount.json")
+    public void subOrderFoodAmount(HttpServletResponse response, TbOrderFood orderFood) {
+        state = 1;
+        message = "数目减1";
+        service.subOrderWithFoodAmount(orderFood);
+        UrlUtils.sendJsonData(response, state, message);
+    }
+
+    /**
+     * 删除购物车中的菜品订单
+     * @param response
+     * @param orderFood
+     */
+    @RequestMapping("deleteFoodInOrder.json")
+    public void deleteOrderFood(HttpServletResponse response, TbOrderFood orderFood) {
+        // 1. 从订单-食物表中删除这条记录
+        service.deleteOrderFood(orderFood);
+
+        // 2. 通过订单ID查找订单食物表中关于该订单的记录数
+        int count = service.queryFoodsCountByOId(orderFood);
+
+        if (count == 0) {   // 如果该订单没有食物列表
+            // 删除订单
+            service.deleteOrder(orderFood);
+        }
+        state = 1;
+        message = "删除菜品成功";
+        UrlUtils.sendJsonData(response, state, message);
+    }
+
+    @RequestMapping("deleteAllOrderFoods.json")
+    public void deleteOrders(HttpServletResponse response, TbOrderFood orderFood) {
+        // 1. 删除订单食物表中所有该订单ID的所有记录
+        service.deleteOrderFoods(orderFood);
+        // 2. 从订单表中删除这项订单
+        service.deleteOrder(orderFood);
+
+        state = 1;
+        message = "清空成功";
+        UrlUtils.sendJsonData(response, state, message);
     }
 
     /*-----------------------------管理端-----------------------------------*/
