@@ -40,14 +40,8 @@ public interface TbOrderService {
      * 更新该订单食物数量+1
      * @param orderFood
      */
-    void setOrderWithFoodAmount(TbOrderFood orderFood);
+    void addOrderWithFoodAmount(TbOrderFood orderFood);
 
-    /**
-     * 该订单新增新的食物
-     * @param oId
-     * @param fId
-     */
-    void createNewOrderFood(int oId, int fId);
 
     List<TbOrder> queryBeingOrderByUId(int uId, int oState);
 

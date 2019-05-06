@@ -35,13 +35,8 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
-    public void setOrderWithFoodAmount(TbOrderFood orderFood) {
-
-    }
-
-    @Override
-    public void createNewOrderFood(int oId, int fId) {
-
+    public void addOrderWithFoodAmount(TbOrderFood orderFood) {
+        orderDao.addFoodAmount(orderFood);
     }
 
     @Override

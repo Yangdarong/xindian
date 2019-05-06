@@ -39,6 +39,7 @@
             <id property="fId" column="f_id" />
             <result property="fName" column="f_name" />
             <result property="fUrl" column="f_url" />
+            <result property="fDPrice" column="f_dprice" />
         </association>
     </resultMap>
 
@@ -57,7 +58,7 @@
     <!-- 向新的订单中添加新的菜品 参数：订单ID+食物ID+初始数量1 -->
     <insert id="addFoodToOrder">
         INSERT INTO tb_order_food (o_id, f_id, of_amount)
-        VALUES (#{fId}, #{fId}, #{ofAmount})
+        VALUES (#{oId}, #{fId}, #{ofAmount})
     </insert>
 
     <select id="queryOrderAndFood" resultMap="tbOrderFoodResultMap">
@@ -76,8 +77,15 @@
     <select id="queryFoodsByOrder" resultMap="tbOrderFoodResultMap" parameterType="TbOrder">
         select
             o.o_id, o.o_state, f.f_id, f.f_name,
-            f.f_url, fo.of_amount
+            f.f_url, f.f_dprice, fo.of_id, fo.of_amount
         from tb_order o, tb_food f, tb_order_food fo
         where o.o_id = fo.o_id and f.f_id = fo.f_id and o.o_id = #{oId};
     </select>
+
+    <!--更新数量系列-->
+    <update id="addFoodAmount" parameterType="TbOrderFood">
+        update tb_order_food
+        SET of_amount = of_amount + 1
+        WHERE of_id = #{ofId}
+    </update>
 </mapper>

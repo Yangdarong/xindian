@@ -34,7 +34,7 @@ public class OrderController {
      * @param response
      * @param order
      */
-    @RequestMapping("/addBuyCar.do")
+    @RequestMapping("/addBuyCar.json")
     public void addFoodToOrder(HttpServletRequest request, HttpServletResponse response, TbOrder order) {
         // 1 判断是否有正在进行的订单(对商家) :
         // 1.1 接收点单食物ID
@@ -60,14 +60,12 @@ public class OrderController {
             TbOrderFood orderFood = service.queryOrderAndFood(order.getoId(), fId);
             if (orderFood != null) {                                 // 已经添加过这个菜品
                 // 4.1 该订单食物数量+1
-                service.setOrderWithFoodAmount(orderFood);
+                service.addOrderWithFoodAmount(orderFood);
             } else {                                                 // 没有添加过这个菜品
                 // 4.2 创建该订单食物
-                service.createNewOrderFood(order.getoId(), fId);
+                service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
             }
         }
-
-        // 返回 Common JSON 数据
     }
 
     /**
@@ -81,6 +79,12 @@ public class OrderController {
     public void queryOrderWithFoods(HttpServletResponse response, HttpServletRequest request, TbUser user) {
         // 1、 通过用户信息查询订单表
         List<TbOrder> orders = service.queryBeingOrderByUId(user.getuId(), 1);
+        OrderFoodsResultType result = new OrderFoodsResultType();
+        PrintWriter out = null;
+        ObjectMapper mapper = new ObjectMapper();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
         if (orders.size() != 0) {    // 当前存在进行中的订单，
             // 返回订单信息
             List<TbOrderFood> orderFoods = new ArrayList<>();
@@ -88,30 +92,30 @@ public class OrderController {
                 orderFoods.addAll(service.queryFoodsByOrder(order));
             }
             // 返回所属的菜单信息
-            OrderFoodsResultType result = new OrderFoodsResultType();
-            PrintWriter out = null;
-            ObjectMapper mapper = new ObjectMapper();
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
 
             try {
                 out = response.getWriter();
-                if (orders.size() != 0 && orderFoods.size() != 0) {
+                if (orderFoods.size() != 0) {
                     result.setState(1);
                     result.setOrders(orders);
                     result.setOrderFoods(orderFoods);
-                } else {
-                    result.setState(0);
-                    result.setOrders(null);
-                    result.setOrderFoods(null);
+                    result.setMessage("查询购物车成功");
                 }
                 out.write(mapper.writeValueAsString(result));
             } catch (Exception e) {
                 e.printStackTrace();
+                result.setState(0);
+                result.setOrders(null);
+                result.setOrderFoods(null);
+                result.setMessage("没有购物车记录");
             }
 
         } else {
             // 直接返回没有内容
+            result.setState(0);
+            result.setOrders(null);
+            result.setOrderFoods(null);
+            result.setMessage("没有购物车记录");
         }
 
     }
