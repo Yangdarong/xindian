@@ -35,18 +35,8 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
-    public void setOrderWithFoodAmount(TbOrderFood orderFood) {
-        orderDao.addOrderFoodAmount(orderFood);
-    }
-
-    @Override
-    public void subOrderWithFoodAmount(TbOrderFood orderFood) {
-        orderDao.subOrderFoodAmount(orderFood);
-    }
-
-    @Override
-    public void createNewOrderFood(int oId, int fId) {
-
+    public void addOrderWithFoodAmount(TbOrderFood orderFood) {
+        orderDao.addFoodAmount(orderFood);
     }
 
     @Override
@@ -57,26 +47,6 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public List<TbOrderFood> queryFoodsByOrder(TbOrder order) {
         return orderDao.queryFoodsByOrder(order);
-    }
-
-    @Override
-    public void deleteOrder(TbOrderFood orderFood) {
-
-    }
-
-    @Override
-    public int queryFoodsCountByOId(TbOrderFood orderFood) {
-        return 0;
-    }
-
-    @Override
-    public void deleteOrderFood(TbOrderFood orderFood) {
-
-    }
-
-    @Override
-    public void deleteOrderFoods(TbOrderFood orderFood) {
-
     }
 
 }

@@ -9,6 +9,7 @@ public class OrderFoodsResultType {
     private int state;
     private List<TbOrder> orders;
     private List<TbOrderFood> orderFoods;
+    private String message;
 
     public int getState() {
         return state;
@@ -32,5 +33,13 @@ public class OrderFoodsResultType {
 
     public void setOrderFoods(List<TbOrderFood> orderFoods) {
         this.orderFoods = orderFoods;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

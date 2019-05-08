@@ -19,7 +19,6 @@ public interface TbOrderDao {
 
     List<TbOrderFood> queryFoodsByOrder(TbOrder order);
 
-    void addOrderFoodAmount(TbOrderFood orderFood);
+    void addFoodAmount(TbOrderFood orderFood);
 
-    void subOrderFoodAmount(TbOrderFood orderFood);
 }
