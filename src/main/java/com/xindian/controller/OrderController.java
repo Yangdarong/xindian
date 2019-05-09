@@ -39,19 +39,13 @@ public class OrderController {
     public void addFoodToOrder(HttpServletRequest request, HttpServletResponse response, TbOrder order) {
         // 1 判断是否有正在进行的订单(对商家) :
         // 1.1 接收点单食物ID
-        int fId = Integer.parseInt(request.getParameter("fId"));
+        //int fId = Integer.parseInt(request.getParameter("fId"));
         // 1.2 判断是否创建新的订单
         if (service.queryCreatedOrder(order) == null) { // 订单未创建 创建全新订单
             // 2. 创建订单 参数：uId, mId
             // 2.1. 操作:订单状态->进行中, 添加创建时间
             order.setoState(ValueUtils.ORDER_ON_GOING);
-            order.setoCreateTime(new Timestamp(new Date().getTime()));
-            service.createNewOrder(order);
-            // 2.2 更新数据到实体
-            order = service.queryCreatedOrder(order);
-
-            // 3. 添加食物ID进入订单
-            service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
+            createNewOrder(order, request);
         } else {                                        // 订单创建
             //System.out.println("将新的菜添加到订单列表");
             // 2. 将食物添加到订单
@@ -67,6 +61,25 @@ public class OrderController {
                 service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
             }
         }
+    }
+
+    private int fId;
+
+    private void createNewOrder(TbOrder order, HttpServletRequest request) {
+        order.setoCreateTime(new Timestamp(new Date().getTime()));
+        order.setoPayState(0);
+        fId = Integer.parseInt(request.getParameter("fId"));
+        service.createNewOrder(order);
+        order = service.queryCreatedOrder(order);
+
+
+        service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
+    }
+
+    @RequestMapping("/addSettle.json")
+    public void addFoodToSettle(HttpServletRequest request, TbOrder order) {
+        order.setoState(ValueUtils.ORDER_USER_QUICK);
+        createNewOrder(order, request);
     }
 
     /**
@@ -133,6 +146,12 @@ public class OrderController {
             service.subOrderWithFoodAmount(orderFood);
             UrlUtils.sendJsonData(response, 1, "SUCCESS");
         }
+    }
+
+    @RequestMapping("/total.json")
+    public void countMoney(HttpServletResponse response, TbUser user) {
+        float total = service.countBuyCarTotal(user.getuId());
+        UrlUtils.sendJsonData(response, 1, String.format("%.2f", total));
     }
 
     /*-----------------------------管理端-----------------------------------*/

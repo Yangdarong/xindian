@@ -3,6 +3,7 @@ package com.xindian.service;
 import com.xindian.dao.TbOrderDao;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,11 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public List<TbOrderFood> queryFoodsByOrder(TbOrder order) {
         return orderDao.queryFoodsByOrder(order);
+    }
+
+    @Override
+    public float countBuyCarTotal(int uId) {
+        return orderDao.countTotal(uId);
     }
 
 }

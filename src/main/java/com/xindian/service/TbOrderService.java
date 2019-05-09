@@ -48,4 +48,11 @@ public interface TbOrderService {
     List<TbOrder> queryBeingOrderByUId(int uId, int oState);
 
     List<TbOrderFood> queryFoodsByOrder(TbOrder order);
+
+    /**
+     * 计算当前订单的总金额
+     * @param uId
+     * @return
+     */
+    float countBuyCarTotal(int uId);
 }

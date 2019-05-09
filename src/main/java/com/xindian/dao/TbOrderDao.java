@@ -22,4 +22,6 @@ public interface TbOrderDao {
     void addFoodAmount(TbOrderFood orderFood);
 
     void subFoodAmount(TbOrderFood orderFood);
+
+    float countTotal(@Param("uId") int uId);
 }

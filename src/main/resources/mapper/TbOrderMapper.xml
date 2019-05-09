@@ -51,8 +51,8 @@
 
     <!--创建一个全新的订单 参数：用户ID+商家ID -->
     <insert id="createNewOrder" parameterType="TbOrder">
-        INSERT INTO tb_order (o_state, m_id, u_id, o_createtime)
-        VALUES (#{oState}, #{mId}, #{uId}, #{oCreateTime})
+        INSERT INTO tb_order (o_state, m_id, u_id, o_paystate, o_createtime)
+        VALUES (#{oState}, #{mId}, #{uId}, #{oPayState}, #{oCreateTime})
     </insert>
 
     <!-- 向新的订单中添加新的菜品 参数：订单ID+食物ID+初始数量1 -->
@@ -94,4 +94,11 @@
         SET of_amount = of_amount - 1
         WHERE of_id = #{ofId}
     </update>
+
+    <select id="countTotal" resultType="Float">
+        select
+            SUM(f.f_dprice * fo.of_amount) as '总金额'
+        from tb_order o, tb_food f, tb_order_food fo
+        where o.o_id = fo.o_id and f.f_id = fo.f_id and u_id = #{uId} and o.o_state = 1;
+    </select>
 </mapper>
