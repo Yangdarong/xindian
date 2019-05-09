@@ -40,6 +40,11 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
+    public void subOrderWithFoodAmount(TbOrderFood orderFood) {
+        orderDao.subFoodAmount(orderFood);
+    }
+
+    @Override
     public List<TbOrder> queryBeingOrderByUId(int uId, int oState) {
         return orderDao.queryBeingOrderByUId(uId, oState);
     }

@@ -88,4 +88,10 @@
         SET of_amount = of_amount + 1
         WHERE of_id = #{ofId}
     </update>
+
+    <update id="subFoodAmount" parameterType="TbOrderFood">
+        update tb_order_food
+        SET of_amount = of_amount - 1
+        WHERE of_id = #{ofId}
+    </update>
 </mapper>

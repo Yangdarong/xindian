@@ -6,6 +6,7 @@ import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 import com.xindian.pojo.TbUser;
 import com.xindian.service.TbOrderService;
+import com.xindian.utils.UrlUtils;
 import com.xindian.utils.ValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -118,6 +119,20 @@ public class OrderController {
             result.setMessage("没有购物车记录");
         }
 
+    }
+
+    @RequestMapping("/foodNumAdd.json")
+    public void addOrderFoodAmount(HttpServletResponse response, TbOrderFood orderFood) {
+        service.addOrderWithFoodAmount(orderFood);
+        UrlUtils.sendJsonData(response, 1, "SUCCESS");
+    }
+
+    @RequestMapping("/foodNumSub.json")
+    public void subOrderFoodAmount(HttpServletResponse response, TbOrderFood orderFood) {
+        if (orderFood.getOfAmount() > 1) {
+            service.subOrderWithFoodAmount(orderFood);
+            UrlUtils.sendJsonData(response, 1, "SUCCESS");
+        }
     }
 
     /*-----------------------------管理端-----------------------------------*/

@@ -10,6 +10,7 @@ import com.xindian.pojo.TbUser;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class UrlUtils {
@@ -66,6 +67,7 @@ public class UrlUtils {
                     resultType.setState(0);
                     resultType.setUser(null);
                 }
+                mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
                 out.write(mapper.writeValueAsString(resultType));
             } catch (Exception e) {
                 e.printStackTrace();

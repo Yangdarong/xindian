@@ -42,6 +42,8 @@ public interface TbOrderService {
      */
     void addOrderWithFoodAmount(TbOrderFood orderFood);
 
+    void subOrderWithFoodAmount(TbOrderFood orderFood);
+
 
     List<TbOrder> queryBeingOrderByUId(int uId, int oState);
 

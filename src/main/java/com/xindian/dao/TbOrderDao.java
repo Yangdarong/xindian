@@ -21,4 +21,5 @@ public interface TbOrderDao {
 
     void addFoodAmount(TbOrderFood orderFood);
 
+    void subFoodAmount(TbOrderFood orderFood);
 }
