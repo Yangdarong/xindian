@@ -77,9 +77,11 @@ public class OrderController {
     }
 
     @RequestMapping("/addSettle.json")
-    public void addFoodToSettle(HttpServletRequest request, TbOrder order) {
+    public void addFoodToSettle(HttpServletRequest request, TbOrder order, HttpServletResponse response) {
         order.setoState(ValueUtils.ORDER_USER_QUICK);
         createNewOrder(order, request);
+
+        UrlUtils.sendJsonData(response, 1, "SUCCESS");
     }
 
     /**
