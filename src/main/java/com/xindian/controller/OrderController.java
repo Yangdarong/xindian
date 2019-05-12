@@ -1,9 +1,11 @@
 package com.xindian.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xindian.common.CommonResultType;
 import com.xindian.common.OrderFoodsResultType;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
+import com.xindian.pojo.TbOrderUser;
 import com.xindian.pojo.TbUser;
 import com.xindian.service.TbOrderService;
 import com.xindian.utils.UrlUtils;
@@ -45,7 +47,7 @@ public class OrderController {
             // 2. 创建订单 参数：uId, mId
             // 2.1. 操作:订单状态->进行中, 添加创建时间
             order.setoState(ValueUtils.ORDER_ON_GOING);
-            createNewOrder(order, request);
+            createNewOrder(order, request, ValueUtils.FOOD_DEFAULT_AMOUNT);
         } else {                                        // 订单创建
             //System.out.println("将新的菜添加到订单列表");
             // 2. 将食物添加到订单
@@ -65,7 +67,7 @@ public class OrderController {
 
     private int fId;
 
-    private void createNewOrder(TbOrder order, HttpServletRequest request) {
+    private void createNewOrder(TbOrder order, HttpServletRequest request, int ofAmount) {
         order.setoCreateTime(new Timestamp(new Date().getTime()));
         order.setoPayState(0);
         fId = Integer.parseInt(request.getParameter("fId"));
@@ -73,15 +75,105 @@ public class OrderController {
         order = service.queryCreatedOrder(order);
 
 
-        service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
+        service.addFoodToOrder(order.getoId(), fId, ofAmount);
     }
 
-    @RequestMapping("/addSettle.json")
-    public void addFoodToSettle(HttpServletRequest request, TbOrder order, HttpServletResponse response) {
-        order.setoState(ValueUtils.ORDER_USER_QUICK);
-        createNewOrder(order, request);
+    /**
+     * 用户点击在菜品详情页直接结算
+     * @param request
+     */
+    @RequestMapping("/doSettle.json")
+    public void addFoodToSettle(HttpServletRequest request, HttpServletResponse response) {
+        OrderFoodsResultType resultType = new OrderFoodsResultType();
+        try {
+            // 1、从request中获取json并转化成JavaBean对象
+            String json = UrlUtils.getRequestJsonString(request);
+            resultType = UrlUtils.jsonToBean(json, OrderFoodsResultType.class);
+            // 2、判断是否存在订单列表
+            if (resultType.getOrders() != null) {   // 存在订单列表
+                // 3.1 提取订单列表
+                List<TbOrder> orders = resultType.getOrders();
+                // 3.2 更新每个order的状态
+                float cost;
+                float sum = 0;
+                for (TbOrder order : orders) {
+                    cost = 0;
+                    // 3.3 更新订单金额
+                    for (TbOrderFood orderFood : resultType.getOrderFoods()) {
+                        if (order.getoId() == orderFood.getOrder().getoId()) {
+//                            order.setoCost(orderFood.getOfAmount() * orderFood.getFood().getfDPrice());
+//                            service.updateOrderCost(order);
+                            cost += orderFood.getOfAmount() * orderFood.getFood().getfDPrice();
+                        }
+                        order.setoCost(cost);
+                        sum += cost;
+                    }
 
-        UrlUtils.sendJsonData(response, 1, "SUCCESS");
+                }
+                TbOrderUser orderUser = new TbOrderUser();
+                orderUser.setOuCost(sum);
+                orderUser.setOuPayTime(new Timestamp(new Date().getTime()));
+                orderUser.setUser(orders.get(0).getUser());
+
+                service.createAnOrderUser(orderUser);
+                int ouId = service.queryCreatedOrderUserId();
+                orderUser.setOuId(ouId);
+
+                for (TbOrder order : orders) {
+                    order.setOrderUser(orderUser);
+                    order.setoState(ValueUtils.ORDER_USER_ACCEPT);  // 转化成为用户确定状态
+                    service.updateOrderWithUser(order);
+                }
+
+            } else {                                    // 不存在订单列表
+                // 3.1 创建新的订单列表
+                List<TbOrderFood> orderFoods = resultType.getOrderFoods();
+                TbOrder order = new TbOrder();
+                order.setmId(orderFoods.get(0).getFood().getmId());
+                order.setuId(orderFoods.get(0).getOrder().getuId());
+                order.setoCreateTime(new Timestamp(new Date().getTime()));
+                order.setoPayState(0);
+                order.setoState(ValueUtils.ORDER_QUICK_SETTLE);
+                service.createNewOrder(order);
+
+                // 3.2 更新每个order的信息
+                //order = service.queryCreatedOrder(order);
+                int oId = service.queryCreatedOrderUserId();
+                order.setoId(oId);
+                float cost = 0;
+                if (orderFoods.get(0).getOfAmount() == 0) {
+                    cost = 1 * orderFoods.get(0).getFood().getfDPrice();
+                } else {
+                    cost = orderFoods.get(0).getOfAmount() * orderFoods.get(0).getFood().getfDPrice();
+                }
+
+                order.setoCost(cost);
+                service.updateOrderCost(order);
+
+                // 3.3 汇总这些订单形成一笔交易
+                service.addFoodToOrder(order.getoId(), orderFoods.get(0).getFood().getfId(), orderFoods.get(0).getOfAmount());
+
+                TbOrderUser orderUser = new TbOrderUser();
+                orderUser.setOuCost(order.getoCost());
+                orderUser.setOuPayTime(new Timestamp(new Date().getTime()));
+                orderUser.setuId(order.getuId());
+
+                service.createAnOrderUser(orderUser);
+                int ouId = service.queryCreatedOrderUserId();
+                order.setOuId(ouId);
+                order.setoState(ValueUtils.ORDER_USER_ACCEPT);  // 转化成为用户确定状态
+                service.updateOrderWithUser(order);
+
+                // 支付成功
+            }
+
+
+            UrlUtils.sendJsonData(response, 1, "成功了");
+        } catch (Exception e) {
+            e.printStackTrace();
+            UrlUtils.sendJsonData(response, 0, "失败了");
+        }
+
     }
 
     /**

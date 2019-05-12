@@ -11,6 +11,7 @@
         <result property="oFinishTime" column="o_finishtime" />
         <result property="oAddress" column="o_address" />
         <result property="oNote" column="o_note" />
+        <result property="oCost" column="o_cost" />
 
         <association property="mer" javaType="com.xindian.pojo.TbMer">
             <id property="mId" column="m_id" />
@@ -25,6 +26,10 @@
             <id property="uId" column="u_id" />
             <result property="uSignature" column="u_signature" />
             <result property="uPhone" column="u_phone" />
+        </association>
+
+        <association property="orderUser" javaType="com.xindian.pojo.TbOrderUser">
+            <id property="ouId" column="ou_id" />
         </association>
     </resultMap>
 
@@ -43,10 +48,21 @@
         </association>
     </resultMap>
 
+    <resultMap id="tbOrderUserResultMap" type="com.xindian.pojo.TbOrderUser">
+        <id property="ouId" column="ou_id" />
+        <result property="uId" column="u_id" />
+        <result property="ouCost" column="ou_cost" />
+        <result property="ouPayTime" column="ou_paytime" />
+
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+        </association>
+    </resultMap>
+
     <!--查询订单是否被创建 条件：用户ID+商家ID+订单状态进行中-->
     <select id="queryCreatedOrder" parameterType="TbOrder" resultMap="tbOrderAllInfoResultMap">
         SELECT * FROM tb_order
-        WHERE u_id = #{uId} AND m_id = #{mId} AND o_state = 1
+        WHERE u_id = #{uId} AND m_id = #{mId} AND o_state = #{oState};
     </select>
 
     <!--创建一个全新的订单 参数：用户ID+商家ID -->
@@ -101,4 +117,29 @@
         from tb_order o, tb_food f, tb_order_food fo
         where o.o_id = fo.o_id and f.f_id = fo.f_id and u_id = #{uId} and o.o_state = 1;
     </select>
+
+    <!--更新订单状态-->
+    <update id="updateOrderState" parameterType="TbOrder">
+        update tb_order set
+        o_state = #{oState} where o_id = #{oId}
+    </update>
+    <update id="updateOrderCost" parameterType="TbOrder">
+        update tb_order set
+        o_cost = #{oCost} where o_id = #{oId}
+    </update>
+
+    <insert id="createAnOrderUser" parameterType="TbOrderUser">
+        insert INTO tb_order_user (u_id, ou_cost, ou_paytime)
+        VALUES (#{uId}, #{ouCost}, #{ouPayTime})
+    </insert>
+
+    <select id="queryCreatedOrderUserId" resultType="Integer">
+        select @@IDENTITY
+    </select>
+
+    <update id="updateOrderWithUser" parameterType="TbOrder">
+        update tb_order set
+        ou_id = #{ouId} and o_state = #{oState}
+        where o_id = #{oId}
+    </update>
 </mapper>

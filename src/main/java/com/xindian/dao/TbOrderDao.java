@@ -2,6 +2,7 @@ package com.xindian.dao;
 
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
+import com.xindian.pojo.TbOrderUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,4 +25,14 @@ public interface TbOrderDao {
     void subFoodAmount(TbOrderFood orderFood);
 
     float countTotal(@Param("uId") int uId);
+
+    void updateOrderState(TbOrder order);
+
+    void updateOrderCost(TbOrder order);
+
+    void createAnOrderUser(TbOrderUser orderUser);
+
+    int queryCreatedOrderUserId();
+
+    void updateOrderWithUser(TbOrder order);
 }

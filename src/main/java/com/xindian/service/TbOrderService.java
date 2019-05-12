@@ -2,6 +2,7 @@ package com.xindian.service;
 
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
+import com.xindian.pojo.TbOrderUser;
 
 import java.util.List;
 
@@ -55,4 +56,34 @@ public interface TbOrderService {
      * @return
      */
     float countBuyCarTotal(int uId);
+
+    /**
+     * 更新订单状态
+     * @param order
+     */
+    void updateOrderState(TbOrder order);
+
+    /**
+     * 更新订单金额
+     * @param order
+     */
+    void updateOrderCost(TbOrder order);
+
+    /**
+     * 创建一笔交易的信息
+     * @param orderUser
+     */
+    void createAnOrderUser(TbOrderUser orderUser);
+
+    /**
+     * 获取最近一次插入的ID
+     * @return
+     */
+    int queryCreatedOrderUserId();
+
+    /**
+     * 更新订单进入用户交易表
+     * @param order
+     */
+    void updateOrderWithUser(TbOrder order);
 }

@@ -24,6 +24,20 @@ public class UserController {
     private TbUserService userService;
 
     /*-----------------------------安卓端-----------------------------------*/
+
+    @RequestMapping("/logout.json")
+    public void queryUserPhone(HttpServletResponse response, HttpServletRequest request, TbUser user) {
+        user.setuUserStateId(0);
+        userService.updateUserState(user);
+        UrlUtils.sendJsonData(response, 1, "cg");
+    }
+
+    /**
+     * 安卓端登录
+     * @param request
+     * @param response
+     * @throws JsonProcessingException
+     */
     @RequestMapping("/queryUser.json")
     public void queryUserFromClient(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
         String uLoginId = request.getParameter("uLoginId");

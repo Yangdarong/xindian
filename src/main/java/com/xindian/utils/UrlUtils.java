@@ -1,15 +1,16 @@
 package com.xindian.utils;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xindian.common.CommonResultType;
-import com.xindian.common.FoodResultType;
-import com.xindian.common.FoodsResultType;
-import com.xindian.common.UserResultType;
+import com.xindian.common.*;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbUser;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -18,6 +19,72 @@ public class UrlUtils {
     public static final String TYPE_MER = "mers";
     public static final String TYPE_USER = "users";
 
+    /*----------------------------------------request获取body----------------------------------------------------*/
+    /**
+     * 获取写入到request的JSON字节数组
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    private static byte[] getRequestPostBytes(HttpServletRequest request) throws IOException {
+        int contentLength = request.getContentLength();
+        if (contentLength < 0) {
+            return null;
+        }
+
+        byte[] buffer = new byte[contentLength];
+        for (int i = 0; i < contentLength;) {
+            int readLen = request.getInputStream().read(buffer, i, contentLength -1);
+            if (readLen == -1) {
+                break;
+            }
+
+            i += readLen;
+        }
+        return buffer;
+    }
+
+    /**
+     * request字节数据转化成String
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    private static String getRequestPostStr(HttpServletRequest request) throws IOException {
+        byte[] buffer = getRequestPostBytes(request);
+        String charEncoding = request.getCharacterEncoding();
+        if (charEncoding == null) {
+            charEncoding = "UTF-8";
+        }
+        assert buffer != null;
+        return new String(buffer, charEncoding);
+    }
+
+    public static String getRequestJsonString(HttpServletRequest request) throws IOException {
+        String submitMethod = request.getMethod();
+        if (submitMethod.equals("GET")) {
+            return new String(request.getQueryString().getBytes("iso-8859-1"), "utf-8")
+                    .replace("%22", "\\");
+        } else {
+            return getRequestPostStr(request);
+        }
+    }
+
+    /*----------------------------------------request接受JSON数据----------------------------------------------------*/
+    /**
+     * 接受JSON数据转化成Bean对象
+     * @param content
+     * @param valueType
+     * @param <T>
+     * @return
+     * @throws IOException
+     */
+    public static <T> T jsonToBean(String content, Class<T> valueType) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(content, valueType);
+    }
+
+    /*----------------------------------------JSON发送数据----------------------------------------------------*/
     /**
      * 返回标准JSON信息
      * @param response  response 响应(固定)

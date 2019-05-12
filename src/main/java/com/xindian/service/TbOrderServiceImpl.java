@@ -3,6 +3,7 @@ package com.xindian.service;
 import com.xindian.dao.TbOrderDao;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
+import com.xindian.pojo.TbOrderUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class TbOrderServiceImpl implements TbOrderService {
     public TbOrder queryCreatedOrder(TbOrder order) {
         return orderDao.queryCreatedOrder(order);
     }
+
 
     @Override
     public void createNewOrder(TbOrder order) {
@@ -58,6 +60,31 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public float countBuyCarTotal(int uId) {
         return orderDao.countTotal(uId);
+    }
+
+    @Override
+    public void updateOrderState(TbOrder order) {
+        orderDao.updateOrderState(order);
+    }
+
+    @Override
+    public void updateOrderCost(TbOrder order) {
+        orderDao.updateOrderCost(order);
+    }
+
+    @Override
+    public void createAnOrderUser(TbOrderUser orderUser) {
+        orderDao.createAnOrderUser(orderUser);
+    }
+
+    @Override
+    public int queryCreatedOrderUserId() {
+        return orderDao.queryCreatedOrderUserId();
+    }
+
+    @Override
+    public void updateOrderWithUser(TbOrder order) {
+        orderDao.updateOrderWithUser(order);
     }
 
 }
