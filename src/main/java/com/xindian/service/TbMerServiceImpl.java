@@ -3,6 +3,7 @@ package com.xindian.service;
 import com.xindian.dao.TbMerDao;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
+import com.xindian.pojo.TbOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,10 @@ public class TbMerServiceImpl implements TbMerService {
     @Override
     public List<TbFood> queryFoodsByMid(int mId) {
         return merDao.queryFoodsByMid(mId);
+    }
+
+    @Override
+    public List<TbOrder> queryMerOrder(int mId) {
+        return merDao.queryMerOrder(mId);
     }
 }

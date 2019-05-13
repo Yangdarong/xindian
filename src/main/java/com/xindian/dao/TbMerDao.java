@@ -2,6 +2,8 @@ package com.xindian.dao;
 
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
+import com.xindian.pojo.TbOrder;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,4 +19,6 @@ public interface TbMerDao {
 
     // 根据商家ID查找它的菜单
     List<TbFood> queryFoodsByMid(int mId);
+
+    List<TbOrder> queryMerOrder(@Param("mId") int mId);
 }

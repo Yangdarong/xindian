@@ -21,6 +21,49 @@
         <result property="fUrl" column="f_url" />
     </resultMap>
 
+    <resultMap id="OrderAllInfoResultMap" type="com.xindian.pojo.TbOrder">
+        <id property="oId" column="o_id" />
+        <result property="oState" column="o_state" />
+        <result property="uPhone" column="u_phone" />
+        <result property="oPayState" column="o_paystate" />
+        <result property="oCreateTime" column="o_createtime" />
+        <result property="oFinishTime" column="o_finishtime" />
+        <result property="oAddress" column="o_address" />
+        <result property="oNote" column="o_note" />
+        <result property="oCost" column="o_cost" />
+
+        <association property="mer" javaType="com.xindian.pojo.TbMer">
+            <id property="mId" column="m_id" />
+            <result property="mName" column="m_name" />
+            <result property="mAddress" column="m_address" />
+            <result property="mPhone" column="m_phone" />
+            <result property="mIntro" column="m_intro" />
+            <result property="mUrl" column="m_url" />
+        </association>
+
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+            <result property="uSignature" column="u_signature" />
+            <result property="uPhone" column="u_phone" />
+        </association>
+
+        <association property="orderUser" javaType="com.xindian.pojo.TbOrderUser">
+            <id property="ouId" column="ou_id" />
+            <result property="ouPayTime" column="ou_paytime" />
+        </association>
+
+        <association property="orderFood" javaType="com.xindian.pojo.TbOrderFood">
+            <id property="ofId" column="of_id" />
+            <result property="oId" column="o_id" />
+            <result property="ofAmount" column="of_amount" />
+            
+            <association property="food" javaType="com.xindian.pojo.TbFood">
+                <id property="fId" column="f_id" />
+                <result property="fName" column="f_name" />
+            </association>
+        </association>
+    </resultMap>
+
     <select id="queryMerById" parameterType="int" resultMap="tbMerResultType">
         SELECT * FROM tb_mer WHERE m_id = #{mId}
     </select>
@@ -46,5 +89,31 @@
 
     <select id="queryFoodsByMid" resultMap="tbFoodIntroResultMap">
         SELECT * from tb_food where m_id = #{mId};
+    </select>
+
+    <select id="queryMerOrder" resultMap="OrderAllInfoResultMap">
+        select
+            o.o_id ,
+            o.o_state ,
+            m.m_id ,
+            m.m_name ,
+            u.u_id ,
+            u.u_signature ,
+            o.u_phone ,
+            o.o_paystate ,
+            o.o_address,
+            o.o_note  ,
+            o.o_cost  ,
+            ou.ou_paytime ,
+            fo.of_amount ,
+            f.f_id ,
+            f.f_name
+        from tb_order o, tb_user u, tb_order_food fo, tb_food f, tb_mer m, tb_order_user ou
+        where o.m_id = m.m_id and
+            o.u_id = u.u_id and
+            o.ou_id = ou.ou_id and
+            o.o_id = fo.o_id and
+            fo.f_id = f.f_id and
+            o.o_state = 4 and o.o_paystate = 1 and m.m_id = #{mId} order by ou.ou_paytime desc limit 5;
     </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.xindian.pojo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class TbOrder {
 
@@ -16,12 +17,12 @@ public class TbOrder {
     private String oNote;
     private float oCost;
     private int ouId;
-    private TbOrderUser orderUser;
-
 
     // 外键
     private TbMer   mer;
     private TbUser  user;
+    private TbOrderUser orderUser;
+    private TbOrderFood orderFood;
 
     public TbOrder() {
     }
@@ -144,5 +145,13 @@ public class TbOrder {
 
     public void setOrderUser(TbOrderUser orderUser) {
         this.orderUser = orderUser;
+    }
+
+    public TbOrderFood getOrderFood() {
+        return orderFood;
+    }
+
+    public void setOrderFood(TbOrderFood orderFood) {
+        this.orderFood = orderFood;
     }
 }

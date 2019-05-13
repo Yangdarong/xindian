@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -93,10 +94,10 @@
             </div>
 
             <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-                <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-file-text"></span><br/>菜品编辑<br/>2300</a></li>
-                <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-briefcase"></span><br/>订单查看<br/>308</a></li>
-                <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br/>昨日访问<br/>80082</a></li>
-                <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-user-md"></span><br/>用户维护<br/>3000</a></li>
+                <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-file-text"></span><br/>菜品编辑<br/></a></li>
+                <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-briefcase"></span><br/>订单查看<br/></a></li>
+                <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br/>昨日访问<br/></a></li>
+                <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-user-md"></span><br/>用户维护<br/></a></li>
             </ul>
 
             <div class="am-g">
@@ -104,23 +105,49 @@
                     <table class="am-table am-table-bd am-table-striped admin-content-table">
                         <thead>
                         <tr>
-                            <th>ID</th><th>用户名</th><th>订购菜品</th><th>状态</th><th>管理</th>
+                            <th>ID</th><th>用户名</th><th>订购菜品</th><th>下单时间</th><th>状态</th><th>管理</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr><td>1</td><td>John Clark</td><td><a href="#">Business management</a></td> <td><span class="am-badge am-badge-success">+20</span></td>
-                            <td>
-                                <div class="am-dropdown" data-am-dropdown>
-                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                                    <ul class="am-dropdown-content">
-                                        <li><a href="#">1. 编辑</a></li>
-                                        <li><a href="#">2. 下载</a></li>
-                                        <li><a href="#">3. 删除</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr><td>2</td><td>风清扬</td><td><a href="#">公司LOGO设计</a> </td><td><span class="am-badge am-badge-danger">+2</span></td>
+                        <c:forEach items="${sessionScope.orders}" var="order">
+                            <tr><td>${order.oId}</td><td>${order.user.uSignature}</td><td><a href="javascript:void(0);">${order.orderFood.food.fName}</a></td><td>${order.orderUser.ouPayTime}</td>
+                                <td>
+                                <c:if test="${order.oState == 4}">
+                                    <span class="am-badge am-badge-danger">待处理</span>
+                                    <%--<span class="am-badge am-badge-success">+20</span>--%>
+                                </c:if>
+                                <c:if test="${order.oState == 5}">
+                                    <span class="am-badge am-badge-warning">处理中</span>
+                                    <%--<span class="am-badge am-badge-success">+20</span>--%>
+                                </c:if>
+                                <c:if test="${order.oState == 6}">
+                                    <span class="am-badge am-badge-badge">用户取消</span>
+                                    <%--<span class="am-badge am-badge-success">+20</span>--%>
+                                </c:if>
+                                <c:if test="${order.oState == 7}">
+                                    <span class="am-badge am-badge-secondary">送餐中</span>
+                                    <%--<span class="am-badge am-badge-success">+20</span>--%>
+                                </c:if>
+                                <c:if test="${order.oState == 8}">
+                                    <span class="am-badge am-badge-success">订单完成</span>
+                                    <%--<span class="am-badge am-badge-success">+20</span>--%>
+                                </c:if>
+                                </td>
+                                <td>
+                                <c:if test="${order.oState != 8}">
+                                    <div class="am-dropdown" data-am-dropdown>
+                                        <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
+                                        <ul class="am-dropdown-content">
+                                            <li><a href="${pageContext.request.contextPath}">1. 编辑</a></li>
+                                            <li><a href="${pageContext.request.contextPath}">2. 执行</a></li>
+                                            <li><a href="${pageContext.request.contextPath}">3. 删除</a></li>
+                                        </ul>
+                                    </div>
+                                </c:if>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <%--<tr><td>2</td><td>风清扬</td><td><a href="#">公司LOGO设计</a> </td><td><span class="am-badge am-badge-danger">+2</span></td>
                             <td>
                                 <div class="am-dropdown" data-am-dropdown>
                                     <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
@@ -171,7 +198,7 @@
                                     </ul>
                                 </div>
                             </td>
-                        </tr>
+                        </tr>--%>
                         </tbody>
                     </table>
                 </div>
@@ -191,6 +218,24 @@
                                     <div class="admin-task-meta"> Posted on 25/1/2120 by John Clark</div>
                                     <div class="admin-task-bd">
                                         The starting place for exploring business management; helping new managers get started and experienced managers get better.
+                                    </div>
+                                    <div class="am-cf">
+                                        <div class="am-btn-toolbar am-fl">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-check"></span></button>
+                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-pencil"></span></button>
+                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-times"></span></button>
+                                            </div>
+                                        </div>
+                                        <div class="am-fr">
+                                            <button type="button" class="am-btn am-btn-default am-btn-xs">删除</button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="admin-task-meta"> Posted on 25/1/2120 by 呵呵呵</div>
+                                    <div class="admin-task-bd">
+                                        基兰和狗熊出现在不同阵营时。基兰会获得BUFF，“装甲熊憎恨者”。狗熊会获得BUFF，“时光老人憎恨者”。
                                     </div>
                                     <div class="am-cf">
                                         <div class="am-btn-toolbar am-fl">
@@ -274,7 +319,7 @@
 
         <footer class="admin-content-footer">
             <hr>
-            <p class="am-padding-left">© 2014 AllMobilize, Inc. Licensed under MIT license.</p>
+            <p class="am-padding-left">© 2019 AllMobilize, Inc. Licensed under MIT license.</p>
         </footer>
     </div>
     <!-- content end -->

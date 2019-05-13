@@ -5,6 +5,7 @@ import com.xindian.common.MerFoodsResultType;
 import com.xindian.common.MerLoginResultType;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
+import com.xindian.pojo.TbOrder;
 import com.xindian.service.TbFoodService;
 import com.xindian.service.TbMerService;
 import com.xindian.utils.FileUtils;
@@ -83,8 +84,21 @@ public class MerController {
 
             if (mer != null) {  // 该用户存在
                 HttpSession session = request.getSession();
-//                session.setAttribute("mer", mer);
                 addToSession(session, mer);
+
+                // 查询订单信息
+                List<TbOrder> orders = service.queryMerOrder(mer.getmId());
+                if (session.getAttribute("orders") == null) {  // 如果为空则添加
+                    session.setAttribute("orders", orders);
+                } else {    // 替换session里面的用户对象
+                    session.removeAttribute("orders");
+                    session.setAttribute("orders", orders);   // 重新添加
+                }
+
+                // 查询任务
+
+                // 查询最新评论
+
                 if (mer.getmIsAdmin() == 1) {   // 超级管理员
                     return "redirect:/page/adminHome";
                 } else {    // 普通商家用户
