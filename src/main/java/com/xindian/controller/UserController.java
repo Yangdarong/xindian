@@ -36,7 +36,7 @@ public class UserController {
             String address1 = new String(rawBytes,"UTF-8");
             address.setUaAddress(address1);
         } else {
-            userService.createAddressInfo(address);
+
         }*/
         UserAddressResultType resultType;
         String json = UrlUtils.getRequestJsonString(request);
