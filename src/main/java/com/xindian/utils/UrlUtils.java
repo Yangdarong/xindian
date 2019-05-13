@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.*;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbUser;
+import com.xindian.pojo.TbUserAddress;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -108,6 +109,7 @@ public class UrlUtils {
         }
     }
 
+
     /**
      * 封装成JSON对象,通过输入流发送请求
      * @param response  response 响应(固定)
@@ -166,6 +168,22 @@ public class UrlUtils {
                 } else {
                     resultType.setState(0);
                     resultType.setFood(null);
+                }
+                out.write(mapper.writeValueAsString(resultType));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (result instanceof UserAddressResultType) {
+            UserAddressResultType resultType = (UserAddressResultType) result;
+            List<TbUserAddress> addresses = (List<TbUserAddress>) obj;
+            try {
+                out = response.getWriter();
+                if (addresses != null) {
+                    resultType.setState(1);
+                    resultType.setAddresses(addresses);
+                } else {
+                    resultType.setState(0);
+                    resultType.setAddresses(null);
                 }
                 out.write(mapper.writeValueAsString(resultType));
             } catch (Exception e) {

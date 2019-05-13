@@ -14,7 +14,17 @@
         <result property="uHeadPortrait" column="u_headportrait" />
         <result property="uLoginTime" column="u_logintime" />
         <result property="uUserStateId" column="u_userstateid" />
+    </resultMap>
 
+    <resultMap id="tbUserAddressResultMap" type="com.xindian.pojo.TbUserAddress">
+        <id property="uaId" column="ua_id" />
+        <result property="uId" column="u_id" />
+        <result property="uaAddress" column="ua_address" />
+        <result property="uaIsUsual" column="ua_isusual" />
+
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+        </association>
     </resultMap>
 
     <insert id="addUser" parameterType="TbUser">
@@ -70,4 +80,13 @@
             u_userstateid = 0
         WHERE u_id = #{uId}
     </update>
+
+    <select id="queryUserAddressList" resultMap="tbUserAddressResultMap">
+        select * from tb_user_address where u_id = #{uId} order by ua_isusual
+    </select>
+
+    <insert id="createAddressInfo" parameterType="TbUserAddress">
+        insert into tb_user_address (u_id, ua_address, ua_isusual)
+        VALUES (#{uId}, #{uaAddress}, #{uaIsUsual})
+    </insert>
 </mapper>

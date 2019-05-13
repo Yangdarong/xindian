@@ -1,8 +1,10 @@
 package com.xindian.service;
 
 import com.xindian.pojo.TbUser;
+import com.xindian.pojo.TbUserAddress;
 
 import java.util.Date;
+import java.util.List;
 
 public interface TbUserService {
 
@@ -25,6 +27,19 @@ public interface TbUserService {
 
     // 修改性别
     void updatUserSex(TbUser user, String sex);
+
+    /**
+     * 获取用户的地址表信息
+     * @param uId
+     * @return
+     */
+    List<TbUserAddress> queryUserAddressList(int uId);
+
+    /**
+     * 创建地址信息
+     * @param address
+     */
+    void createAddressInfo(TbUserAddress address);
 
 
     // 修改手机号

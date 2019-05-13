@@ -139,7 +139,22 @@
 
     <update id="updateOrderWithUser" parameterType="TbOrder">
         update tb_order set
-        ou_id = #{ouId} and o_state = #{oState}
+        ou_id = #{ouId}, o_state = #{oState}
         where o_id = #{oId}
     </update>
+
+    <update id="updateOrderWithPhoneAndAddress" parameterType="TbOrder">
+        update tb_order set
+        o_address = #{oAddress}, u_phone = #{uPhone}, o_paystate = #{oPayState} where o_id = #{oId}
+    </update>
+
+<!--    查询交易表中的刚完成支付的这笔交易ID-->
+    <select id="queryOrderUserByUId" resultType="Integer">
+        select ou_id from tb_order_user where u_id = #{uId} order by ou_paytime desc limit 1;
+    </select>
+<!--    获取这笔交易的所有订单ID-->
+    <select id="queryOrderByOuId" resultMap="tbOrderAllInfoResultMap">
+        select o.o_id, o.o_address, o.u_phone, o.o_state, o.o_paystate, o.ou_id from tb_order_user ou, tb_order o
+        where o.ou_id = ou.ou_id and o.o_state = 3 and ou.ou_id = #{ouId};
+    </select>
 </mapper>

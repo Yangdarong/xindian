@@ -2,8 +2,10 @@ package com.xindian.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xindian.common.UserAddressResultType;
 import com.xindian.common.UserResultType;
 import com.xindian.pojo.TbUser;
+import com.xindian.pojo.TbUserAddress;
 import com.xindian.service.TbUserService;
 import com.xindian.utils.UrlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -25,11 +28,46 @@ public class UserController {
 
     /*-----------------------------安卓端-----------------------------------*/
 
+    @RequestMapping("/createUserAddress.json")
+    public void createAddressInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        /*if (address.getUaAddress() == null) {
+            String uaAddress = request.getParameter("uaAddress");
+            byte[] rawBytes = uaAddress.getBytes("ISO-8859-1");
+            String address1 = new String(rawBytes,"UTF-8");
+            address.setUaAddress(address1);
+        } else {
+            userService.createAddressInfo(address);
+        }*/
+        UserAddressResultType resultType;
+        String json = UrlUtils.getRequestJsonString(request);
+        resultType = UrlUtils.jsonToBean(json, UserAddressResultType.class);
+
+        if (resultType.getAddresses() != null) {
+            List<TbUserAddress> addresses = resultType.getAddresses();
+            TbUserAddress address = addresses.get(0);
+            userService.createAddressInfo(address);
+        }
+        UrlUtils.sendJsonData(response, 1, "成功");
+    }
+
+    @RequestMapping("/queryUserAddress.json")
+    public void queryUserAddressList(HttpServletResponse response, TbUser user) {
+        List<TbUserAddress> addresses = userService.queryUserAddressList(user.getuId());
+        UserAddressResultType result = new UserAddressResultType();
+        UrlUtils.sendJsonData(response, result, addresses);
+    }
+
+    /**
+     * 用户注销
+     * @param response
+     * @param request
+     * @param user
+     */
     @RequestMapping("/logout.json")
-    public void queryUserPhone(HttpServletResponse response, HttpServletRequest request, TbUser user) {
+    public void setUserState(HttpServletResponse response, HttpServletRequest request, TbUser user) {
         user.setuUserStateId(0);
         userService.updateUserState(user);
-        UrlUtils.sendJsonData(response, 1, "cg");
+        UrlUtils.sendJsonData(response, 1, "成功");
     }
 
     /**
@@ -53,7 +91,6 @@ public class UserController {
             userService.updateLoginTime(user, new Timestamp(new Date().getTime()));
             userService.updateUserState(user);
         }
-
         UserResultType result = new UserResultType();
         UrlUtils.sendJsonData(response, result, user);
 
@@ -93,4 +130,5 @@ public class UserController {
 
     }
 
+    /*-----------------------------服务端-----------------------------------*/
 }

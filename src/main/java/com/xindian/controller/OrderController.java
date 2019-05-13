@@ -3,6 +3,7 @@ package com.xindian.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.CommonResultType;
 import com.xindian.common.OrderFoodsResultType;
+import com.xindian.common.OrderResultType;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 import com.xindian.pojo.TbOrderUser;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -173,6 +175,39 @@ public class OrderController {
             e.printStackTrace();
             UrlUtils.sendJsonData(response, 0, "失败了");
         }
+
+    }
+
+    @RequestMapping("/updateOrderInfo.json")
+    public void updateOrderWithPhoneAndAddress(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        OrderResultType resultType;
+        String json = UrlUtils.getRequestJsonString(request);
+        resultType = UrlUtils.jsonToBean(json, OrderResultType.class);
+        if (resultType.getOrder() != null) {
+            TbOrder order = resultType.getOrder();
+            int uId = order.getuId();
+//        查询交易表中的刚完成支付的这笔交易ID
+            int ouId = service.queryOrderUserByUId(uId);
+//        获取这笔交易的所有订单
+            List<TbOrder> orders = service.queryOrderByOuId(ouId);
+//        update订单信息
+            for (TbOrder order1 : orders) {
+                order.setoId(order1.getoId());
+                order.setoPayState(1);
+                service.updateOrderWithPhoneAndAddress(order);
+                order.setoState(ValueUtils.ORDER_USER_PAYOFF);
+                order.setOuId(ouId);
+                // 转化成为用户支付状态
+                service.updateOrderWithUser(order);
+
+            }
+
+            UrlUtils.sendJsonData(response, 1, "更新成功");
+        } else {
+            UrlUtils.sendJsonData(response, 0, "更新失败");
+
+        }
+
 
     }
 

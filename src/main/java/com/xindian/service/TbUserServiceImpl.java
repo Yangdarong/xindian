@@ -2,10 +2,12 @@ package com.xindian.service;
 
 import com.xindian.dao.TbUserDao;
 import com.xindian.pojo.TbUser;
+import com.xindian.pojo.TbUserAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TbUserServiceImpl implements TbUserService {
@@ -58,5 +60,15 @@ public class TbUserServiceImpl implements TbUserService {
     public void updatUserSex(TbUser user, String sex) {
         user.setuSex(sex);
         userDao.updateUserSex(user);
+    }
+
+    @Override
+    public List<TbUserAddress> queryUserAddressList(int uId) {
+        return userDao.queryUserAddressList(uId);
+    }
+
+    @Override
+    public void createAddressInfo(TbUserAddress address) {
+        userDao.createAddressInfo(address);
     }
 }

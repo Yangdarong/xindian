@@ -35,4 +35,10 @@ public interface TbOrderDao {
     int queryCreatedOrderUserId();
 
     void updateOrderWithUser(TbOrder order);
+
+    void updateOrderWithPhoneAndAddress(TbOrder order);
+
+    int queryOrderUserByUId(@Param("uId") int uId);
+
+    List<TbOrder> queryOrderByOuId(@Param("ouId") int ouId);
 }

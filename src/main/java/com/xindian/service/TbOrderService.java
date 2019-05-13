@@ -86,4 +86,24 @@ public interface TbOrderService {
      * @param order
      */
     void updateOrderWithUser(TbOrder order);
+
+    /**
+     * 更新订单的手机信息和收货地址信息
+     * @param order
+     */
+    void updateOrderWithPhoneAndAddress(TbOrder order);
+
+    /**
+     * 通过用户ID获取最新创建的交易记录ID
+     * @param uId
+     * @return
+     */
+    int queryOrderUserByUId(int uId);
+
+    /**
+     * 通过交易记录ID获取对应的订单列表结果
+     * @param ouId
+     * @return
+     */
+    List<TbOrder> queryOrderByOuId(int ouId);
 }

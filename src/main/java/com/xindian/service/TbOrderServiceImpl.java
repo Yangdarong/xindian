@@ -87,4 +87,19 @@ public class TbOrderServiceImpl implements TbOrderService {
         orderDao.updateOrderWithUser(order);
     }
 
+    @Override
+    public void updateOrderWithPhoneAndAddress(TbOrder order) {
+        orderDao.updateOrderWithPhoneAndAddress(order);
+    }
+
+    @Override
+    public int queryOrderUserByUId(int uId) {
+        return orderDao.queryOrderUserByUId(uId);
+    }
+
+    @Override
+    public List<TbOrder> queryOrderByOuId(int ouId) {
+        return orderDao.queryOrderByOuId(ouId);
+    }
+
 }
