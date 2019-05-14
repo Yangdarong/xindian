@@ -59,7 +59,7 @@
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                         <li><a href="${pageContext.request.contextPath}/page/merInfo" class="am-cf"><span class="am-icon-check"></span> 店面资料<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
                         <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
-                        <li><a href="admin-gallery.html"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
+                        <li><a href="${pageContext.request.contextPath}/mer/queryOrders.do?mId=${sessionScope.mer.mId}"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
                         <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>
                         <%--<li><a href="admin-404.html"><span class="am-icon-bug"></span> 404</a></li>--%>
                     </ul>
@@ -94,9 +94,9 @@
             </div>
 
             <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-                <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-file-text"></span><br/>菜品编辑<br/></a></li>
+                <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}" class="am-text-success"><span class="am-icon-btn am-icon-file-text"></span><br/>菜品编辑<br/></a></li>
                 <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-briefcase"></span><br/>订单查看<br/></a></li>
-                <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br/>昨日访问<br/></a></li>
+                <li><a href="javascript:void(0);" class="am-text-danger"><span class="am-icon-btn am-icon-recycle"></span><br/>昨日访问<br/></a></li>
                 <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-user-md"></span><br/>用户维护<br/></a></li>
             </ul>
 
@@ -134,71 +134,19 @@
                                 </c:if>
                                 </td>
                                 <td>
-                                <c:if test="${order.oState != 8}">
+                                <c:if test="${order.oState > 5}">
                                     <div class="am-dropdown" data-am-dropdown>
                                         <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
                                         <ul class="am-dropdown-content">
-                                            <li><a href="${pageContext.request.contextPath}">1. 编辑</a></li>
-                                            <li><a href="${pageContext.request.contextPath}">2. 执行</a></li>
-                                            <li><a href="${pageContext.request.contextPath}">3. 删除</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/mer/operatorOrder.do?oId=${order.oId}&oState=${order.oState}">1. 执行</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/mer/toEditOrder.do?oId=${order.oId}">2. 编辑</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/mer/cancelOrder.do?oId=${order.oId}">3. 取消</a></li>
                                         </ul>
                                     </div>
                                 </c:if>
                                 </td>
                             </tr>
                         </c:forEach>
-                        <%--<tr><td>2</td><td>风清扬</td><td><a href="#">公司LOGO设计</a> </td><td><span class="am-badge am-badge-danger">+2</span></td>
-                            <td>
-                                <div class="am-dropdown" data-am-dropdown>
-                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                                    <ul class="am-dropdown-content">
-                                        <li><a href="#">1. 编辑</a></li>
-                                        <li><a href="#">2. 下载</a></li>
-                                        <li><a href="#">3. 删除</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr><td>3</td><td>詹姆斯</td><td><a href="#">开发一款业务数据软件</a></td><td><span class="am-badge am-badge-warning">+10</span></td>
-                            <td>
-                                <div class="am-dropdown" data-am-dropdown>
-                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                                    <ul class="am-dropdown-content">
-                                        <li><a href="#">1. 编辑</a></li>
-                                        <li><a href="#">2. 下载</a></li>
-                                        <li><a href="#">3. 删除</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr><td>4</td><td>云适配</td><td><a href="#">适配所有网站</a></td><td><span class="am-badge am-badge-secondary">+50</span></td>
-                            <td>
-                                <div class="am-dropdown" data-am-dropdown>
-                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                                    <ul class="am-dropdown-content">
-                                        <li><a href="#">1. 编辑</a></li>
-                                        <li><a href="#">2. 下载</a></li>
-                                        <li><a href="#">3. 删除</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>5</td><td>呵呵呵</td>
-                            <td><a href="#">基兰会获得BUFF</a></td>
-                            <td><span class="am-badge">+22</span></td>
-                            <td>
-                                <div class="am-dropdown" data-am-dropdown>
-                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
-                                    <ul class="am-dropdown-content">
-                                        <li><a href="#">1. 编辑</a></li>
-                                        <li><a href="#">2. 下载</a></li>
-                                        <li><a href="#">3. 删除</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>--%>
                         </tbody>
                     </table>
                 </div>

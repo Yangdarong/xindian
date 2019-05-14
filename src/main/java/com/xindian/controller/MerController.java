@@ -3,13 +3,17 @@ package com.xindian.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.MerFoodsResultType;
 import com.xindian.common.MerLoginResultType;
+import com.xindian.common.PageBean;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
 import com.xindian.pojo.TbOrder;
+import com.xindian.pojo.TbOrderFood;
 import com.xindian.service.TbFoodService;
 import com.xindian.service.TbMerService;
 import com.xindian.utils.FileUtils;
 import com.xindian.utils.UrlUtils;
+import com.xindian.utils.ValueUtils;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -60,6 +64,121 @@ public class MerController {
 
 
     /*-----------------------------管理端-----------------------------------*/
+
+    /**
+     * 查询所有订单信息(默认第一页)
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryOrders.do")
+    public String queryAllOrdersInfo(HttpServletRequest request) {
+        int mId = Integer.parseInt(request.getParameter("mId"));
+        PageBean<TbOrder> orderPageBean = service.queryAllOrderInfoFindPage(1, mId);
+
+        HttpSession session = request.getSession();
+        if (orderPageBean != null) {
+            addToSession(session, orderPageBean);
+        }
+
+        return "redirect:/page/orderInfo";
+    }
+
+    /**
+     * 根据分页查找订单
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryPage.do")
+    public String queryOrdersByPage(HttpServletRequest request) {
+        int mId = Integer.parseInt(request.getParameter("mId"));
+        int pId = Integer.parseInt(request.getParameter("pId"));
+
+        PageBean<TbOrder> orderPageBean = service.queryAllOrderInfoFindPage(pId, mId);
+
+        HttpSession session = request.getSession();
+        if (orderPageBean != null) {
+            addToSession(session, orderPageBean);
+        }
+
+        return "redirect:/page/merOrder";
+    }
+
+    /**
+     * 删除一个订单的菜品
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/cancelOrderFood.do")
+    public String cancelOrderFood(HttpServletRequest request, HttpServletResponse response) {
+        // 删除该项
+        int ofId = Integer.parseInt(request.getParameter("ofId"));
+        int oId = Integer.parseInt(request.getParameter("oId"));
+        service.deleteOrderFoodByOfId(ofId);
+        List<TbOrderFood> orderFoods = service.queryOrderFoodsByOId(oId);
+        if (orderFoods == null) {
+            service.updateOrderState(oId, ValueUtils.ORDER_USER_CANCEL);
+        }
+        // 刷新页面
+        return "redirect:/page/editOrder";
+    }
+
+    /**
+     * 前往订单详情页
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/toEditOrder.do")
+    public String toEditOrder(HttpServletRequest request, HttpServletResponse response) {
+        int oId = Integer.parseInt(request.getParameter("oId"));
+        List<TbOrderFood> orderFoods = service.queryOrderFoodsByOId(oId);
+        HttpSession session = request.getSession();
+
+        if (session.getAttribute("orderFoods") == null) {  // 如果为空则添加
+            session.setAttribute("orderFoods", orderFoods);
+        } else {
+            session.removeAttribute("orderFoods");
+            session.setAttribute("orderFoods", orderFoods);
+        }
+        return "redirect:/page/editOrder";
+    }
+
+    /**
+     * 通过订单ID　完成用户取消订单
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/cancelOrder.do")
+    public String cancelOrder(HttpServletRequest request, HttpServletResponse response) {
+        int oId = Integer.parseInt(request.getParameter("oId"));
+        service.updateOrderState(oId, ValueUtils.ORDER_USER_CANCEL);
+
+        return refreshMerPage(request);
+    }
+
+    private String refreshMerPage(HttpServletRequest request) {
+        int mId = 0;
+        HttpSession session = request.getSession();
+        if (session.getAttribute("mer") != null) {  // 如果为空则添加
+            TbMer mer = (TbMer) session.getAttribute("mer");
+            mId = mer.getmId();
+            return "redirect:/page/merHome?mId=" + mId;
+        } else {    // 当没有Mid时显示登录失败
+            return "redirect:/loginFail";
+        }
+    }
+
+    @RequestMapping("/operatorOrder.do")
+    public String operatorOrder(HttpServletRequest request, HttpServletResponse response) {
+        int oId = Integer.parseInt(request.getParameter("oId"));
+        int oState = Integer.parseInt(request.getParameter("oState"));
+        service.updateOrderState(oId, oState + 1);
+        // 获取商家ID
+        return refreshMerPage(request);
+    }
+
     /**
      * 后台系统登录
      * @param request
@@ -172,6 +291,16 @@ public class MerController {
         } else {    // 替换session里面的用户对象
             session.removeAttribute("mer");
             session.setAttribute("mer", mer);   // 重新添加
+        }
+    }
+
+    private void addToSession(@NonNull HttpSession session, @NonNull PageBean<TbOrder> orderPageBean) {
+//                session.setAttribute("mer", mer);
+        if (session.getAttribute("orderPageBean") == null) {  // 如果为空则添加
+            session.setAttribute("orderPageBean", orderPageBean);
+        } else {    // 替换session里面的用户对象
+            session.removeAttribute("orderPageBean");
+            session.setAttribute("orderPageBean", orderPageBean);   // 重新添加
         }
     }
 }

@@ -40,11 +40,20 @@ public class PageController {
         return "food-info";
     }
 
+    // 订单查看
+    @RequestMapping("/page/orderInfo")
+    public String orderInfo() {
+        return "order-info";
+    }
+
     // 编辑菜品
     @RequestMapping("page/editFood")
     public String addFoods() {
         return "food-edit";
     }
 
-
+    @RequestMapping("/page/editOrder")
+    public String editOrder() {
+        return "order-edit";
+    }
 }

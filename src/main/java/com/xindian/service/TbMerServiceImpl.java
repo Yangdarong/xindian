@@ -1,12 +1,15 @@
 package com.xindian.service;
 
+import com.xindian.common.PageBean;
 import com.xindian.dao.TbMerDao;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbMer;
 import com.xindian.pojo.TbOrder;
+import com.xindian.pojo.TbOrderFood;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -43,5 +46,50 @@ public class TbMerServiceImpl implements TbMerService {
     @Override
     public List<TbOrder> queryMerOrder(int mId) {
         return merDao.queryMerOrder(mId);
+    }
+
+    @Override
+    public void updateOrderState(int oId, int oState) {
+        merDao.updateOrderState(oId, oState);
+    }
+
+    @Override
+    public List<TbOrderFood> queryOrderFoodsByOId(int oId) {
+        return merDao.queryOrderFoodsByOId(oId);
+    }
+
+    @Override
+    public void deleteOrderFoodByOfId(int ofId) {
+        merDao.deleteOrderFoodByOfId(ofId);
+    }
+
+    @Override
+    public PageBean<TbOrder> queryAllOrderInfoFindPage(int currentPage, int mId) {
+        HashMap<String, Object> map = new HashMap<>();
+        PageBean<TbOrder> orderPageBean = new PageBean<>();
+
+        // 封装当前页面
+        orderPageBean.setCurrentPage(currentPage);
+        int pageSize = 10;
+        orderPageBean.setPageSize(pageSize);
+
+        // 封装总记录数
+        int totalCount = merDao.countAllOrderInfo(mId);
+        orderPageBean.setTotalCount(totalCount);
+
+        // 封装总页数
+        double tc = totalCount;
+        Double num = Math.ceil(tc/pageSize);    // 向上取整
+        orderPageBean.setTotalPage(num.intValue());
+
+        map.put("start", (currentPage - 1) * pageSize);
+        map.put("size", orderPageBean.getPageSize());
+        map.put("mId", mId);
+
+        // 封装每页显示的数据
+        List<TbOrder> orders = merDao.queryAllOrdersInfoFindPage(map);
+        orderPageBean.setLists(orders);
+
+        return orderPageBean;
     }
 }

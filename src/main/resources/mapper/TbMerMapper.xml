@@ -64,6 +64,22 @@
         </association>
     </resultMap>
 
+    <resultMap id="OrderFoodResultMap" type="com.xindian.pojo.TbOrderFood">
+        <id property="ofId" column="of_id" />
+        <result property="ofAmount" column="of_amount" />
+
+        <association property="order" javaType="com.xindian.pojo.TbOrder">
+            <id property="oId" column="o_id" />
+            <result property="oState" column="o_state" />
+        </association>
+        <association property="food" javaType="com.xindian.pojo.TbFood">
+            <id property="fId" column="f_id" />
+            <result property="fName" column="f_name" />
+            <result property="fUrl" column="f_url" />
+            <result property="fDPrice" column="f_dprice" />
+        </association>
+    </resultMap>
+
     <select id="queryMerById" parameterType="int" resultMap="tbMerResultType">
         SELECT * FROM tb_mer WHERE m_id = #{mId}
     </select>
@@ -91,6 +107,10 @@
         SELECT * from tb_food where m_id = #{mId};
     </select>
 
+    <!--
+        在主页
+        查询关于商家的用户已经付款的订单列表信息
+    -->
     <select id="queryMerOrder" resultMap="OrderAllInfoResultMap">
         select
             o.o_id ,
@@ -114,6 +134,80 @@
             o.ou_id = ou.ou_id and
             o.o_id = fo.o_id and
             fo.f_id = f.f_id and
-            o.o_state = 4 and o.o_paystate = 1 and m.m_id = #{mId} order by ou.ou_paytime desc limit 5;
+            o.o_paystate = 1 and m.m_id = #{mId}
+        order by o.o_state limit 5;
+    </select>
+
+    <update id="updateOrderState">
+        UPDATE tb_order SET
+        o_state = #{oState} where o_id = #{oId}
+    </update>
+
+    <select id="queryOrderFoodsByOId" resultMap="OrderFoodResultMap">
+        select
+            fo.of_id,
+            fo.of_amount,
+            o.o_id,
+            o.o_state,
+            f.f_name,
+            f.f_dprice
+        from
+            tb_order_food fo,
+            tb_order o,
+            tb_food f
+        where
+            fo.o_id = o.o_id and
+            fo.f_id = f.f_id and
+            fo.o_id = #{oId}
+    </select>
+
+    <delete id="deleteOrderFoodByOfId" parameterType="Integer">
+        delete from tb_order_food
+        where of_id = #{ofId}
+    </delete>
+
+    <select id="countAllOrderInfo" resultType="int" parameterType="int">
+        select count(*)
+        from tb_order o,
+             tb_user u,
+             tb_order_food fo,
+             tb_food f,
+             tb_mer m,
+             tb_order_user ou
+        where o.m_id = m.m_id and
+            o.u_id = u.u_id and
+            o.ou_id = ou.ou_id and
+            o.o_id = fo.o_id and
+            fo.f_id = f.f_id and
+            o.o_paystate = 1 and m.m_id = #{mId}
+    </select>
+
+    <select id="queryAllOrdersInfoFindPage" resultMap="OrderAllInfoResultMap">
+        select
+            o.o_id ,
+            o.o_state ,
+            m.m_id ,
+            m.m_name ,
+            u.u_id ,
+            u.u_signature ,
+            o.u_phone ,
+            o.o_paystate ,
+            o.o_address,
+            o.o_note  ,
+            o.o_cost  ,
+            ou.ou_paytime ,
+            fo.of_amount ,
+            f.f_id ,
+            f.f_name
+        from tb_order o, tb_user u, tb_order_food fo, tb_food f, tb_mer m, tb_order_user ou
+        <if test="start != null and size != null and mId != null">
+        where o.m_id = m.m_id and
+            o.u_id = u.u_id and
+            o.ou_id = ou.ou_id and
+            o.o_id = fo.o_id and
+            fo.f_id = f.f_id and
+            o.o_paystate = 1 and m.m_id = #{mId}
+        order by o.o_state limit #{start}, #{size};
+        </if>
     </select>
 </mapper>

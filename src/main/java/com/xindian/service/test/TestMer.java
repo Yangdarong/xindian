@@ -34,4 +34,9 @@ public class TestMer {
 
         System.out.println(list.size());
     }
+
+    @Test
+    public void testMerUpdate() {
+        service.updateOrderState(13, 10);
+    }
 }

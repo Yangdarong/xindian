@@ -9,10 +9,10 @@
     <meta name="keywords" content="user">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="assets/i/favicon.png">
     <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
 </head>
@@ -28,12 +28,15 @@
         <small>商家后台系统</small>
     </div>
 
-    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+            data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+            class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
-            <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span class="am-badge am-badge-warning">5</span></a></li>
+            <li><a href="javascript:;"><span class="am-icon-envelope-o"></span> 收件箱 <span
+                    class="am-badge am-badge-warning">5</span></a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
@@ -44,7 +47,8 @@
                     <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
                 </ul>
             </li>
-            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen"><span
+                    class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
         </ul>
     </div>
 </header>
@@ -96,7 +100,9 @@
     <div class="admin-content">
         <div class="admin-content-body">
             <div class="am-cf am-padding am-padding-bottom-0">
-                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">编辑菜品</strong> / <small>Edit Food</small></div>
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">编辑菜品</strong> /
+                    <small>Edit Food</small>
+                </div>
             </div>
 
             <hr/>
@@ -107,13 +113,16 @@
                         <div class="am-panel-bd">
                             <div class="am-g">
                                 <div class="am-u-md-4">
-                                    <img id="food-pic" class="am-img-circle am-img-thumbnail" src="../${sessionScope.tbFood.fUrl}" alt=""/>
+                                    <img id="food-pic" class="am-img-circle am-img-thumbnail"
+                                         src="../${sessionScope.tbFood.fUrl}" alt=""/>
                                 </div>
                                 <div class="am-u-md-8">
                                     <p>请使用本地上传图片。 </p>
-                                    <form class="am-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/food/editFoodPic?fId=${sessionScope.tbFood.fId}">
+                                    <form class="am-form" method="post" enctype="multipart/form-data"
+                                          action="${pageContext.request.contextPath}/food/editFoodPic?fId=${sessionScope.tbFood.fId}">
                                         <div class="am-form-group">
-                                            <input type="file" id="user-pic" name="pictureFile" onchange="showPic(this)">
+                                            <input type="file" id="user-pic" name="pictureFile"
+                                                   onchange="showPic(this)">
                                             <p class="am-form-help">请选择要上传的文件...</p>
                                             <button type="submit" class="am-btn am-btn-primary am-btn-xs">保存</button>
                                         </div>
@@ -135,7 +144,7 @@
                                                         alert("要求图片格式为png,jpg,jpeg,bmp");
                                                     }
                                                     return;
-                                                }  else {
+                                                } else {
                                                     if (obj.files) {
                                                         //alert(obj.files.item(0).name);
                                                         if (judgeImgSuffix(obj.files.item(0).name)) {
@@ -156,7 +165,7 @@
                                                 if (index > 0) {
                                                     suffix = path.substring(index + 1);
                                                 }
-                                                if ("png"==suffix || "jpg"==suffix || "jpeg"==suffix || "bmp"==suffix || "PNG"==suffix || "JPG"==suffix || "JPEG"==suffix || "BMP"==suffix) {
+                                                if ("png" == suffix || "jpg" == suffix || "jpeg" == suffix || "bmp" == suffix || "PNG" == suffix || "JPG" == suffix || "JPEG" == suffix || "BMP" == suffix) {
                                                     return true;
                                                 } else {
                                                     return false;
@@ -171,17 +180,20 @@
                 </div>
 
                 <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
-                    <form class="am-form am-form-horizontal" method="post" action="${pageContext.request.contextPath}/food/editFoodInfo?merId=${sessionScope.tbFood.mer.mId}">
+                    <form class="am-form am-form-horizontal" method="post"
+                          action="${pageContext.request.contextPath}/food/editFoodInfo?merId=${sessionScope.tbFood.mer.mId}">
                         <div class="am-form-group">
                             <label for="food-id" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>编号 / ID</label>
                             <div class="am-u-sm-9">
-                                <input type="text" id="food-id" name="fId" value="${sessionScope.tbFood.fId}" readonly="readonly">
+                                <input type="text" id="food-id" name="fId" value="${sessionScope.tbFood.fId}"
+                                       readonly="readonly">
 
                             </div>
                         </div>
 
                         <div class="am-form-group">
-                            <label for="user-name" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>名字 / Name</label>
+                            <label for="user-name" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>名字 /
+                                Name</label>
                             <div class="am-u-sm-9">
                                 <input type="text" id="user-name" name="fName" value="${sessionScope.tbFood.fName}">
 
@@ -189,7 +201,8 @@
                         </div>
 
                         <div class="am-form-group">
-                            <label for="food-price" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>原价 / Price</label>
+                            <label for="food-price" class="am-u-sm-3 am-form-label"><span style="color:red">*</span>原价 /
+                                Price</label>
                             <div class="am-u-sm-9">
                                 <input type="text" id="food-price" name="fPrice" value="${sessionScope.tbFood.fPrice}">
                             </div>
@@ -198,7 +211,8 @@
                         <div class="am-form-group">
                             <label for="food-dprice" class="am-u-sm-3 am-form-label">折扣价 / DPrice</label>
                             <div class="am-u-sm-9">
-                                <input type="text" id="food-dprice" name="fDPrice" value="${sessionScope.tbFood.fDPrice}">
+                                <input type="text" id="food-dprice" name="fDPrice"
+                                       value="${sessionScope.tbFood.fDPrice}">
                             </div>
                         </div>
 
@@ -223,7 +237,8 @@
 
 </div>
 
-<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"
+   data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
 <footer>
     <hr>
