@@ -180,17 +180,17 @@
                             </tbody>
                         </table>
                         <div class="am-cf">
-                            共 ${sessionScope.pageBean.totalCount} 条记录
+                            共 ${sessionScope.orderPageBean.totalCount} 条记录
                             <div class="am-fr">
                                 <ul class="am-pagination">
                                     <li class="am-disabled"><a href="#">«</a></li>
                                     <c:forEach var="i" begin="1" end="${sessionScope.orderPageBean.totalPage}" step="1">
-                                        <c:if test="${i} == ${sessionScope.orderPageBean.currentPage}">
+                                        <c:if test="${i == sessionScope.orderPageBean.currentPage}">
                                             <li class="am-active">
                                                 <a href="${pageContext.request.contextPath}/mer/queryPage.do?pid=${i}&mId=${sessionScope.mer.mId}">${i}</a>
                                             </li>
                                         </c:if>
-                                        <c:if test="${i} != ${sessionScope.orderPageBean.currentPage}">
+                                        <c:if test="${i != sessionScope.orderPageBean.currentPage}">
                                             <li>
                                                 <a href="${pageContext.request.contextPath}/mer/queryPage.do?pid=${i}&mId=${sessionScope.mer.mId}">${i}</a>
                                             </li>
@@ -206,7 +206,7 @@
                             </div>
                         </div>
                         <hr/>
-                        <p>注：.....</p>
+                        <p></p>
                     </form>
                 </div>
 
