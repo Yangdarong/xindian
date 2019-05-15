@@ -184,11 +184,20 @@ public class OrderController {
             OrderFoodsResultType resultType;
             String json = UrlUtils.getRequestJsonString(request);
             resultType = UrlUtils.jsonToBean(json, OrderFoodsResultType.class);
-            if (resultType.getOrders() != null) {
-                System.out.println("删除订单");
-            }
             if (resultType.getOrderFoods() != null) {
-                System.out.println("删除订单食物列表");
+                //System.out.println("删除订单食物列表");
+                List<TbOrderFood> orderFoods = resultType.getOrderFoods();
+                for (TbOrderFood orderFood : orderFoods) {
+                    service.deleteOrderFood(orderFood);
+                }
+            }
+            if (resultType.getOrders() != null) {
+                //System.out.println("删除订单");
+                List<TbOrder> orders = resultType.getOrders();
+                for (TbOrder order : orders) {
+                    order.setoState(ValueUtils.ORDER_INVALID);
+                    service.updateOrderState(order);
+                }
             }
 
             UrlUtils.sendJsonData(response, 1, "成功");

@@ -82,7 +82,7 @@
     </update>
 
     <select id="queryUserAddressList" resultMap="tbUserAddressResultMap">
-        select * from tb_user_address where u_id = #{uId} order by ua_isusual
+        select * from tb_user_address where u_id = #{uId} order by ua_isusual desc
     </select>
 
     <insert id="createAddressInfo" parameterType="TbUserAddress">

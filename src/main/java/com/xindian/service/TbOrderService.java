@@ -106,4 +106,12 @@ public interface TbOrderService {
      * @return
      */
     List<TbOrder> queryOrderByOuId(int ouId);
+
+    /**
+     * 删除订单食物数据
+     * @param orderFood
+     */
+    void deleteOrderFood(TbOrderFood orderFood);
+
+
 }

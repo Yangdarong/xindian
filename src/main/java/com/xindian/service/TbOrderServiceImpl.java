@@ -102,4 +102,9 @@ public class TbOrderServiceImpl implements TbOrderService {
         return orderDao.queryOrderByOuId(ouId);
     }
 
+    @Override
+    public void deleteOrderFood(TbOrderFood orderFood) {
+        orderDao.deleteOrderFood(orderFood);
+    }
+
 }

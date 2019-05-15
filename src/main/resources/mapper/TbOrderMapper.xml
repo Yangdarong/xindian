@@ -157,4 +157,9 @@
         select o.o_id, o.o_address, o.u_phone, o.o_state, o.o_paystate, o.ou_id from tb_order_user ou, tb_order o
         where o.ou_id = ou.ou_id and o.o_state = 3 and ou.ou_id = #{ouId};
     </select>
+
+    <delete id="deleteOrderFood" parameterType="com.xindian.pojo.TbOrderFood">
+        delete from tb_order_food
+        WHERE of_id = #{ofId}
+    </delete>
 </mapper>
