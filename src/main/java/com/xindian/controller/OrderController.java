@@ -191,7 +191,7 @@ public class OrderController {
                 System.out.println("删除订单食物列表");
             }
 
-            UrlUtils.sendJsonData(response, 1, "太牛了,成功");
+            UrlUtils.sendJsonData(response, 1, "成功");
         } catch (Exception e) {
             e.printStackTrace();
             UrlUtils.sendJsonData(response, 0, "出现异常");
