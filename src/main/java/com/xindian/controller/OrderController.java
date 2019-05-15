@@ -178,6 +178,26 @@ public class OrderController {
 
     }
 
+    @RequestMapping("/deleteBuyCar.json")
+    public void deleteOrdersOrOrderFoods(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            OrderFoodsResultType resultType;
+            String json = UrlUtils.getRequestJsonString(request);
+            resultType = UrlUtils.jsonToBean(json, OrderFoodsResultType.class);
+            if (resultType.getOrders() != null) {
+                System.out.println("删除订单");
+            }
+            if (resultType.getOrderFoods() != null) {
+                System.out.println("删除订单食物列表");
+            }
+
+            UrlUtils.sendJsonData(response, 1, "太牛了,成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            UrlUtils.sendJsonData(response, 0, "出现异常");
+        }
+    }
+
     @RequestMapping("/updateOrderInfo.json")
     public void updateOrderWithPhoneAndAddress(HttpServletResponse response, HttpServletRequest request) throws IOException {
         OrderResultType resultType;
@@ -218,7 +238,7 @@ public class OrderController {
      * @param request
      * @param user
      */
-    @RequestMapping("/queryBayCar.json")
+    @RequestMapping("/queryBuyCar.json")
     public void queryOrderWithFoods(HttpServletResponse response, HttpServletRequest request, TbUser user) {
         // 1、 通过用户信息查询订单表
         List<TbOrder> orders = service.queryBeingOrderByUId(user.getuId(), 1);
