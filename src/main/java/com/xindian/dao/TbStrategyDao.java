@@ -25,4 +25,6 @@ public interface TbStrategyDao {
     void removeFoodStrategy(TbFoodStrategy foodStrategy);
 
     void updateStrategy(TbStrategy strategy);
+
+    List<TbStrategy> queryUserFromStrategyDesc();
 }

@@ -67,4 +67,11 @@ public interface TbStrategyService {
      * @param strategy
      */
     void updateStrategy(TbStrategy strategy);
+
+    /**
+     * 获取发表美食攻略数排行的用户信息
+     * @return
+     */
+    List<TbStrategy> queryUserFromStrategyDesc();
+
 }

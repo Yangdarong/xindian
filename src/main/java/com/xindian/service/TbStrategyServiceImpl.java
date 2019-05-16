@@ -59,4 +59,9 @@ public class TbStrategyServiceImpl implements TbStrategyService {
     public void updateStrategy(TbStrategy strategy) {
         strategyDao.updateStrategy(strategy);
     }
+
+    @Override
+    public List<TbStrategy> queryUserFromStrategyDesc() {
+        return strategyDao.queryUserFromStrategyDesc();
+    }
 }

@@ -13,6 +13,7 @@
         <association property="user" javaType="com.xindian.pojo.TbUser">
             <id property="uId" column="u_id" />
             <result property="uSignature" column="u_signature" />
+            <result property="uHeadPortrait" column="u_headportrait" />
         </association>
     </resultMap>
 
@@ -102,4 +103,8 @@
             s_createtime = #{sCreateTime}
         WHERE s_id = #{sId}
     </update>
+
+    <select id="queryUserFromStrategyDesc" resultMap="">
+
+    </select>
 </mapper>

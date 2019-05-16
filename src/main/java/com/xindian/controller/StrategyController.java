@@ -134,4 +134,23 @@ public class StrategyController {
         }
 
     }
+
+    /**
+     * 获取用户推荐表
+     * @param response
+     */
+    @RequestMapping("/queryRecommendUsers.json")
+    public void queryRecommendUsers(HttpServletResponse response) {
+        StrategiesResultType resultType = new StrategiesResultType();
+        List<TbStrategy> strategies = service.queryUserFromStrategyDesc();
+        if (strategies != null) {
+            resultType.setState(1);
+            resultType.setStrategies(strategies);
+            resultType.setMessage("获取消息列表成功");
+        } else {
+            resultType.setState(0);
+            resultType.setStrategies(strategies);
+            resultType.setMessage("获取消息列表成功");
+        }
+    }
 }
