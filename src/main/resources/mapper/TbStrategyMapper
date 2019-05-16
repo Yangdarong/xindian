@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xindian.dao.TbStrategyDao">
+    <resultMap id="tbStrategyResultMap" type="com.xindian.pojo.TbStrategy">
+        <id property="sId" column="s_id" />
+        <result property="sName" column="s_name" />
+        <result property="sContext" column="s_context" />
+        <result property="sState" column="s_state" />
+        <result property="sCreateTime" column="s_createtime" />
+
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+            <result property="uSignature" column="u_signature" />
+        </association>
+    </resultMap>
+
+    <resultMap id="tbFoodStrategyResultMap" type="com.xindian.pojo.TbFoodStrategy">
+        <id property="fsId" column="fs_id" />
+        <association property="food" javaType="com.xindian.pojo.TbFood">
+            <id property="fId" column="f_id"/>
+            <result property="fName" column="f_name" />
+            <result property="fUrl" column="f_url" />
+            <result property="fDPrice" column="f_dprice" />
+
+            <association property="mer" javaType="com.xindian.pojo.TbMer">
+                <id property="mId" column="m_id" />
+                <result property="mName" column="m_name" />
+                <result property="mUrl" column="m_url" />
+            </association>
+        </association>
+
+        <association property="strategy" javaType="com.xindian.pojo.TbStrategy">
+            <id property="sId" column="s_id" />
+        </association>
+    </resultMap>
+
+    <resultMap id="foodResultType" type="com.xindian.pojo.TbFood">
+        <id property="fId" column="f_id" />
+        <result property="fName" column="f_name" />
+        <result property="fUrl" column="f_url" />
+        <result property="fPrice" column="f_price" />
+        <result property="fDPrice" column="f_dprice" />
+
+        <association property="mer" javaType="com.xindian.pojo.TbMer">
+            <id property="mId" column="m_id" />
+            <result property="mName" column="m_name" />
+            <result property="mUrl" column="m_url" />
+        </association>
+    </resultMap>
+
+    <insert id="createNewStrategy" parameterType="Integer">
+        INSERT INTO tb_strategy (s_state, u_id) VALUES (#{sState}, #{uId})
+    </insert>
+
+    <select id="queryIncreaseId" resultType="Integer">
+        select @@IDENTITY
+    </select>
+
+    <select id="queryStrategyBySid" resultMap="tbStrategyResultMap">
+        SELECT * FROM tb_strategy where s_id = #{sId}
+    </select>
+
+    <update id="updateStrategyStateBySid" parameterType="Integer">
+        update tb_strategy set s_state = #{sState} where s_id = #{sId}
+    </update>
+
+    <select id="queryExistFoodStrategy" resultMap="tbFoodStrategyResultMap">
+        select * from tb_food_strategy WHERE s_id = #{sId} AND f_id = #{fId}
+    </select>
+
+    <insert id="createNewFoodStrategy" parameterType="Integer">
+        INSERT INTO tb_food_strategy (f_id, s_id) VALUES (#{fId}, #{sId})
+    </insert>
+
+    <select id="queryFoodStrategiesBySid" parameterType="Integer" resultMap="foodResultType">
+        select
+            f.f_id,
+            f.f_name,
+            f.f_url,
+            m.m_id,
+            m.m_name,
+            fs.fs_id
+        from
+            tb_food f,
+            tb_mer m,
+            tb_food_strategy fs
+        where
+            fs.f_id = f.f_id and f.m_id = m.m_id and fs.s_id = #{sId};
+    </select>
+
+    <delete id="removeFoodStrategy" parameterType="com.xindian.pojo.TbFoodStrategy">
+        delete from tb_food_strategy where f_id = #{fId} and s_id = #{sId}
+    </delete>
+
+    <update id="updateStrategy" parameterType="com.xindian.pojo.TbStrategy">
+        update tb_strategy set
+            s_name = #{sName},
+            s_context = #{sContext},
+            s_state = #{sState},
+            s_createtime = #{sCreateTime}
+        WHERE s_id = #{sId}
+    </update>
+</mapper>

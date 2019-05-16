@@ -92,4 +92,18 @@
     <update id="editFoodInfo" parameterType="com.xindian.pojo.TbFood">
         UPDATE tb_food SET f_name = #{fName}, f_price = #{fPrice}, f_dprice = #{fDPrice} where f_id = #{fId}
     </update>
+
+    <select id="queryFoodsInfoByName" resultMap="tbFoodAllInfoResultType" parameterType="String">
+        select
+            f.f_id,
+            f.f_name,
+            f.f_url,
+            m.m_id,
+            m.m_name
+        from
+            tb_food f,
+            tb_mer m
+        where
+            f.m_id = m.m_id and f.f_name like '%${fName}%';
+    </select>
 </mapper>

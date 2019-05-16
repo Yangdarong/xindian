@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.*;
 import com.xindian.pojo.TbFood;
+import com.xindian.pojo.TbStrategy;
 import com.xindian.pojo.TbUser;
 import com.xindian.pojo.TbUserAddress;
 
@@ -184,6 +185,24 @@ public class UrlUtils {
                 } else {
                     resultType.setState(0);
                     resultType.setAddresses(null);
+                }
+                out.write(mapper.writeValueAsString(resultType));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (result instanceof StrategiesResultType) {
+            StrategiesResultType resultType = (StrategiesResultType) result;
+            List<TbStrategy> strategies = (List<TbStrategy>) obj;
+            try {
+                out = response.getWriter();
+                if (strategies != null) {
+                    resultType.setState(1);
+                    resultType.setStrategies(strategies);
+                    resultType.setMessage("拿到数据了");
+                } else {
+                    resultType.setState(0);
+                    resultType.setStrategies(null);
+                    resultType.setMessage("没有拿到数据");
                 }
                 out.write(mapper.writeValueAsString(resultType));
             } catch (Exception e) {

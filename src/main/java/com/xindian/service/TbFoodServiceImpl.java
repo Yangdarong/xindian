@@ -86,4 +86,9 @@ public class TbFoodServiceImpl implements TbFoodService {
     public TbFood getFoodById(int fId) {
         return foodDao.getFoodById(fId);
     }
+
+    @Override
+    public List<TbFood> queryFoodsInfoByName(String fName) {
+        return foodDao.queryFoodsInfoByName(fName);
+    }
 }

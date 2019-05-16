@@ -27,4 +27,6 @@ public interface TbFoodDao {
     List<TbFood> queryFoodByFtId(@Param("ftId") int ftId);
 
     TbFood getFoodById(@Param("fId") int fId);
+
+    List<TbFood> queryFoodsInfoByName(@Param("fName") String fName);
 }

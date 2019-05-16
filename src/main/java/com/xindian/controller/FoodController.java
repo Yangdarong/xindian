@@ -8,6 +8,7 @@ import com.xindian.pojo.TbFoodType;
 import com.xindian.service.TbFoodService;
 import com.xindian.utils.FileUtils;
 import com.xindian.utils.UrlUtils;
+import com.xindian.utils.ValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,7 +57,25 @@ public class FoodController {
         UrlUtils.sendJsonData(response, result, foods);
     }
 
+    /**
+     * 通过关键字检索食物信息
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/queryFoodsBykW.json")
+    public void queryFoodsByKw(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        String json = UrlUtils.getRequestJsonString(request);
+        FoodResultType resultType = UrlUtils.jsonToBean(json, FoodResultType.class);
+        String fName = resultType.getFood().getfName();
+        List<TbFood> foods = new ArrayList<>();
+        FoodsResultType type = new FoodsResultType();
+        if (!ValueUtils.isNull(fName)) {
+            foods = service.queryFoodsInfoByName(fName);
+        }
+        UrlUtils.sendJsonData(response, type, foods);
+
+    }
 
     /*-----------------------------管理端-----------------------------------*/
     /**

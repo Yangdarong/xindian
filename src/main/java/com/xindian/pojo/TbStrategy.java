@@ -1,12 +1,18 @@
 package com.xindian.pojo;
 
+import java.sql.Timestamp;
+
 public class TbStrategy {
 
     private int sId;
     private String sName;
     private String sContext;
+    private int sState;
+    private Timestamp sCreateTime;
+    private TbUser user;
 
-    private int uId;
+    public TbStrategy() {
+    }
 
     public int getsId() {
         return sId;
@@ -32,11 +38,27 @@ public class TbStrategy {
         this.sContext = sContext;
     }
 
-    public int getuId() {
-        return uId;
+    public int getsState() {
+        return sState;
     }
 
-    public void setuId(int uId) {
-        this.uId = uId;
+    public void setsState(int sState) {
+        this.sState = sState;
+    }
+
+    public Timestamp getsCreateTime() {
+        return sCreateTime;
+    }
+
+    public void setsCreateTime(Timestamp sCreateTime) {
+        this.sCreateTime = sCreateTime;
+    }
+
+    public TbUser getUser() {
+        return user;
+    }
+
+    public void setUser(TbUser user) {
+        this.user = user;
     }
 }

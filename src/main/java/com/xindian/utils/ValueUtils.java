@@ -15,6 +15,12 @@ public class ValueUtils {
     public static final int ORDER_COMPLETE = 8;
     public static final int ORDER_INVALID = 9;
 
+    // 美食攻略的状态
+    public static final int STRATEGY_ON_EDITING = 1;
+    public static final int STRATEGY_ON_PUBLISHING = 2;
+    public static final int STRATEGY_USER_DELETE = 3;
+    public static final int STRATEGY_INVALID = 4;
+
     // 默认订单菜品数量 1
     public static final int FOOD_DEFAULT_AMOUNT = 1;
 

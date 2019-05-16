@@ -29,4 +29,11 @@ public interface TbFoodService {
     List<TbFood> queryFoodByFtId(int ftId);
 
     TbFood getFoodById(int fId);
+
+    /**
+     * 根据名字返回相似的食物结果列表
+     * @param fName
+     * @return
+     */
+    List<TbFood> queryFoodsInfoByName(String fName);
 }
