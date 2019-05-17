@@ -3,6 +3,7 @@ package com.xindian.service;
 import com.xindian.common.PageBean;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbFoodType;
+import com.xindian.pojo.TbUserFood;
 
 import java.util.List;
 
@@ -36,4 +37,19 @@ public interface TbFoodService {
      * @return
      */
     List<TbFood> queryFoodsInfoByName(String fName);
+
+    /**
+     * 获取用户和食物的收藏记录
+     * @param uId
+     * @param fId
+     * @return
+     */
+    TbUserFood queryUserFood(int uId, int fId);
+
+    /**
+     * 添加用户菜品的收藏记录
+     * @param uId
+     * @param fId
+     */
+    void createUserFood(int uId, int fId);
 }

@@ -198,11 +198,11 @@ public class UrlUtils {
                 if (strategies != null) {
                     resultType.setState(1);
                     resultType.setStrategies(strategies);
-                    resultType.setMessage("拿到数据了");
+                    resultType.setMessage("获取数据成功");
                 } else {
                     resultType.setState(0);
                     resultType.setStrategies(null);
-                    resultType.setMessage("没有拿到数据");
+                    resultType.setMessage("获取数据失败");
                 }
                 out.write(mapper.writeValueAsString(resultType));
             } catch (Exception e) {

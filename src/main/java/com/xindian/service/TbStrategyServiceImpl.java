@@ -64,4 +64,19 @@ public class TbStrategyServiceImpl implements TbStrategyService {
     public List<TbStrategy> queryUserFromStrategyDesc() {
         return strategyDao.queryUserFromStrategyDesc();
     }
+
+    @Override
+    public List<TbStrategy> queryStrategyOrderByCreateTime() {
+        return strategyDao.queryStrategyOrderByCreateTime();
+    }
+
+    @Override
+    public void createNewStrategyUser(int sId, int uId) {
+        strategyDao.createNewStrategyUser(sId, uId);
+    }
+
+    @Override
+    public List<TbStrategy> queryStrategyByUid(int uId) {
+        return strategyDao.queryStrategyByUid(uId);
+    }
 }

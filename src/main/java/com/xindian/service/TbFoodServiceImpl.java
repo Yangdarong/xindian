@@ -4,6 +4,7 @@ import com.xindian.common.PageBean;
 import com.xindian.dao.TbFoodDao;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbFoodType;
+import com.xindian.pojo.TbUserFood;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,5 +91,15 @@ public class TbFoodServiceImpl implements TbFoodService {
     @Override
     public List<TbFood> queryFoodsInfoByName(String fName) {
         return foodDao.queryFoodsInfoByName(fName);
+    }
+
+    @Override
+    public TbUserFood queryUserFood(int uId, int fId) {
+        return foodDao.queryUserFood(uId, fId);
+    }
+
+    @Override
+    public void createUserFood(int uId, int fId) {
+        foodDao.createUserFood(uId, fId);
     }
 }

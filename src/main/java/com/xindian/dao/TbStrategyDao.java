@@ -27,4 +27,10 @@ public interface TbStrategyDao {
     void updateStrategy(TbStrategy strategy);
 
     List<TbStrategy> queryUserFromStrategyDesc();
+
+    List<TbStrategy> queryStrategyOrderByCreateTime();
+
+    void createNewStrategyUser(@Param("sId") int sId, @Param("uId") int uId);
+
+    List<TbStrategy> queryStrategyByUid(@Param("uId") int uId);
 }

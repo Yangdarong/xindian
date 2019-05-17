@@ -2,6 +2,7 @@ package com.xindian.dao;
 
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbFoodType;
+import com.xindian.pojo.TbUserFood;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
@@ -29,4 +30,8 @@ public interface TbFoodDao {
     TbFood getFoodById(@Param("fId") int fId);
 
     List<TbFood> queryFoodsInfoByName(@Param("fName") String fName);
+
+    TbUserFood queryUserFood(@Param("uId") int uId, @Param("fId") int fId);
+
+    void createUserFood(@Param("uId") int uId, @Param("fId") int fId);
 }

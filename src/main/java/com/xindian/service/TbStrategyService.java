@@ -74,4 +74,23 @@ public interface TbStrategyService {
      */
     List<TbStrategy> queryUserFromStrategyDesc();
 
+    /**
+     * 通过时间倒序获取美食攻略信息
+     * @return
+     */
+    List<TbStrategy> queryStrategyOrderByCreateTime();
+
+    /**
+     * 创建新的用户收藏美食攻略记录
+     * @param sId
+     * @param uId
+     */
+    void createNewStrategyUser(int sId, int uId);
+
+    /**
+     * 通过Uid查询用户自己编写的美食攻略
+     * @param uId
+     * @return
+     */
+    List<TbStrategy> queryStrategyByUid(int uId);
 }

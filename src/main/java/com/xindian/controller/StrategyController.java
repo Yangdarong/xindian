@@ -1,5 +1,8 @@
 package com.xindian.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xindian.common.FoodStrategyResultType;
 import com.xindian.common.FoodsResultType;
 import com.xindian.common.StrategiesResultType;
 import com.xindian.pojo.TbFood;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,14 +148,81 @@ public class StrategyController {
     public void queryRecommendUsers(HttpServletResponse response) {
         StrategiesResultType resultType = new StrategiesResultType();
         List<TbStrategy> strategies = service.queryUserFromStrategyDesc();
-        if (strategies != null) {
+
+
+        UrlUtils.sendJsonData(response, resultType, strategies);
+    }
+
+    @RequestMapping("/queryRecommendStrategies.json")
+    public void queryRecommendStrategies(HttpServletResponse response) throws Exception {
+        // 返回对象的数据
+        List<TbStrategy> strategies = service.queryStrategyOrderByCreateTime();
+
+        sendStrategies(strategies, response);
+    }
+
+    @RequestMapping("/queryStrategyInfo.json")
+    public void queryStrategyInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int sId = Integer.parseInt(request.getParameter("sId"));
+        TbStrategy strategy = service.queryStrategyBySid(sId);
+        List<TbStrategy> strategies = new ArrayList<>();
+        strategies.add(strategy);
+
+        sendStrategies(strategies, response);
+    }
+
+    @RequestMapping("/followStrategy.json")
+    public void followStrategy(HttpServletRequest request, HttpServletResponse response) {
+        int sId = Integer.parseInt(request.getParameter("sId"));
+        int uId = Integer.parseInt(request.getParameter("uId"));
+
+        if (sId != 0 && uId != 0) {
+            // 创建关注
+            service.createNewStrategyUser(sId, uId);
+
+            UrlUtils.sendJsonData(response, 1, "关注成功");
+        } else {
+            UrlUtils.sendJsonData(response, 0, "出现未知错误");
+        }
+    }
+
+    @RequestMapping("/queryStrategiesByUid.json")
+    public void queryStrategiesByUser(HttpServletResponse response, HttpServletRequest request) {
+        int uId = Integer.parseInt(request.getParameter("uId"));
+        List<TbStrategy> strategies = service.queryStrategyByUid(uId);
+        StrategiesResultType resultType = new StrategiesResultType();
+
+        UrlUtils.sendJsonData(response, resultType, strategies);
+    }
+
+    private void sendStrategies(List<TbStrategy> strategies, HttpServletResponse response) throws IOException {
+        List<List<TbFood>> strategyFoods = new ArrayList<>();
+        for (TbStrategy strategy : strategies) {
+            // 获取sId,并且查询对应的食物表
+            List<TbFood> foods = service.queryFoodStrategiesBySid(strategy.getsId());
+            strategyFoods.add(foods);
+        }
+
+        // 装配数据发送JSON
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        FoodStrategyResultType resultType = new FoodStrategyResultType();
+        if (strategies.size() != 0) {
             resultType.setState(1);
+            resultType.setFoods(strategyFoods);
             resultType.setStrategies(strategies);
-            resultType.setMessage("获取消息列表成功");
+            resultType.setMessage("获取数据成功");
         } else {
             resultType.setState(0);
-            resultType.setStrategies(strategies);
-            resultType.setMessage("获取消息列表成功");
+            resultType.setFoods(null);
+            resultType.setStrategies(null);
+            resultType.setMessage("获取数据失败");
         }
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        out = response.getWriter();
+        out.write(mapper.writeValueAsString(resultType));
     }
 }

@@ -25,6 +25,18 @@
         </association>
     </resultMap>
 
+    <resultMap id="tbUserFoodResultMap" type="com.xindian.pojo.TbUserFood">
+        <id property="ufId" column="uf_id" />
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+        </association>
+        <association property="food" javaType="com.xindian.pojo.TbFood">
+            <id property="fId" column="f_id" />
+            <result property="fName" column="f_name" />
+            <result property="fUrl" column="f_url" />
+        </association>
+    </resultMap>
+
     <!--
         查询所有菜(菜名+种类+商家+原价+折扣价+图片) 条件: ID
     -->
@@ -106,4 +118,13 @@
         where
             f.m_id = m.m_id and f.f_name like '%${fName}%';
     </select>
+
+    <select id="queryUserFood" resultMap="tbUserFoodResultMap">
+        select * from tb_user_food
+        where u_id = #{uId} and f_id = #{fId}
+    </select>
+
+    <insert id="createUserFood" parameterType="Integer">
+        INSERT INTO tb_user_food (u_id, f_id) VALUES (#{uId}, #{fId})
+    </insert>
 </mapper>

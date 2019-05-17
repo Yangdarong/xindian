@@ -5,6 +5,7 @@ import com.xindian.common.FoodsResultType;
 import com.xindian.common.PageBean;
 import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbFoodType;
+import com.xindian.pojo.TbUserFood;
 import com.xindian.service.TbFoodService;
 import com.xindian.utils.FileUtils;
 import com.xindian.utils.UrlUtils;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -75,6 +77,42 @@ public class FoodController {
         }
         UrlUtils.sendJsonData(response, type, foods);
 
+    }
+
+    @RequestMapping("/collectMenu.json")
+    public void collectMenu(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String json = UrlUtils.getRequestJsonString(request);
+        FoodsResultType resultType = UrlUtils.jsonToBean(json, FoodsResultType.class);
+        int uId = resultType.getState();
+        List<TbFood> foods = resultType.getFoods();
+        int count = 0;
+        for (TbFood food : foods) {
+            // 获取每个fId;
+            int fId = food.getfId();
+            // 查询收藏表是否有该条记录
+            TbUserFood userFood = service.queryUserFood(uId, fId);
+            if (userFood != null) {
+                count++;
+            } else {
+                service.createUserFood(uId, fId);
+            }
+        }
+        if (count == foods.size()) {    // 所有食物均已收藏
+            UrlUtils.sendJsonData(response, 0, "食物列表已经收藏过了");
+        } else if (count == 0) {        // 收藏成功
+            UrlUtils.sendJsonData(response, 1, "收藏成功");
+        } else {                        // 部分食物已收藏
+            UrlUtils.sendJsonData(response, 1, "已添加新的收藏");
+        }
+    }
+
+    @RequestMapping("/queryFoodsByTime.json")
+    public void queryFoodsByTime(HttpServletResponse response) {
+        List<TbFood> foods = service.queryAllFoodsInfo();
+        Collections.reverse(foods);
+
+        FoodsResultType resultType = new FoodsResultType();
+        UrlUtils.sendJsonData(response, resultType, foods);
     }
 
     /*-----------------------------管理端-----------------------------------*/

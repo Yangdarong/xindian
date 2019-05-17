@@ -37,6 +37,18 @@
         </association>
     </resultMap>
 
+    <resultMap id="tbStrategyUserResultMap" type="com.xindian.pojo.TbStrategyUser">
+        <id property="suId" column="su_id" />
+        <association property="strategy" javaType="com.xindian.pojo.TbStrategy">
+            <id property="sId" column="s_id" />
+        </association>
+        <association property="user" javaType="com.xindian.pojo.TbUser">
+            <id property="uId" column="u_id" />
+            <result property="uSignature" column="u_signature" />
+            <result property="uHeadPortrait" column="u_headportrait" />
+        </association>
+    </resultMap>
+
     <resultMap id="foodResultType" type="com.xindian.pojo.TbFood">
         <id property="fId" column="f_id" />
         <result property="fName" column="f_name" />
@@ -104,7 +116,40 @@
         WHERE s_id = #{sId}
     </update>
 
-    <select id="queryUserFromStrategyDesc" resultMap="">
+    <select id="queryUserFromStrategyDesc" resultMap="tbStrategyResultMap">
+        select
+            u.u_id,
+            u.u_signature,
+            u.u_headportrait
+        from
+            tb_strategy s,
+            tb_user u
+        where s.s_state = 2 and s.u_id = u.u_id
+        group by s.u_id order by s.u_id desc limit 10;
+    </select>
 
+    <select id="queryStrategyOrderByCreateTime" resultMap="tbStrategyResultMap">
+        select
+            s.s_id,
+            s.s_name,
+            s.s_context,
+            s.s_createtime,
+            u.u_id,
+            u.u_signature,
+            u.u_headportrait
+        from
+            tb_strategy s,
+            tb_user u
+        where s.s_state = 2 and s.u_id = u.u_id
+        order by s.s_createtime desc;
+    </select>
+
+    <insert id="createNewStrategyUser" parameterType="Integer">
+        INSERT INTO tb_strategy_user (s_id, u_id) VALUES (#{sId}, #{uId})
+    </insert>
+
+    <select id="queryStrategyByUid" parameterType="Integer" resultMap="tbStrategyResultMap">
+        SELECT s.s_id, s.s_name, s.s_createtime from tb_strategy s
+        WHERE s.u_id = #{uId}
     </select>
 </mapper>
