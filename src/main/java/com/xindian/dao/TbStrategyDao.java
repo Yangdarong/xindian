@@ -33,4 +33,6 @@ public interface TbStrategyDao {
     void createNewStrategyUser(@Param("sId") int sId, @Param("uId") int uId);
 
     List<TbStrategy> queryStrategyByUid(@Param("uId") int uId);
+
+    TbStrategy queryStrategyBySidAndUid(@Param("sId") int sId, @Param("uId") int uId);
 }

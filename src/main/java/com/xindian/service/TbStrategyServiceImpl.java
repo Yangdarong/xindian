@@ -79,4 +79,9 @@ public class TbStrategyServiceImpl implements TbStrategyService {
     public List<TbStrategy> queryStrategyByUid(int uId) {
         return strategyDao.queryStrategyByUid(uId);
     }
+
+    @Override
+    public TbStrategy queryStrategyBySidAndUid(int sId, int uId) {
+        return strategyDao.queryStrategyBySidAndUid(sId, uId);
+    }
 }

@@ -20,7 +20,8 @@ public class TbFoodServiceImpl implements TbFoodService {
 
     @Override
     public List<TbFood> queryAllFoodsInfo() {
-        return null;
+
+        return foodDao.queryAllFoodsInfo();
     }
 
     @Override

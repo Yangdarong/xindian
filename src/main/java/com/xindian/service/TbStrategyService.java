@@ -93,4 +93,12 @@ public interface TbStrategyService {
      * @return
      */
     List<TbStrategy> queryStrategyByUid(int uId);
+
+    /**
+     * 判断是否
+     * @param sId
+     * @param uId
+     * @return
+     */
+    TbStrategy queryStrategyBySidAndUid(int sId, int uId);
 }

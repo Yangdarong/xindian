@@ -28,7 +28,7 @@ public interface TbMerService {
     List<TbOrder> queryMerOrder(int mId);
 
     /**
-     * 商家更新订单
+     * 商家更新订单Fo'o
      * @param oId
      * @param oState
      */

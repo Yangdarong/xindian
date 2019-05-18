@@ -72,7 +72,18 @@
     </select>
 
     <select id="queryStrategyBySid" resultMap="tbStrategyResultMap">
-        SELECT * FROM tb_strategy where s_id = #{sId}
+        select
+            s.s_id,
+            s.s_name,
+            s.s_context,
+            s.s_createtime,
+            u.u_id,
+            u.u_signature,
+            u.u_headportrait
+        from
+            tb_strategy s,
+            tb_user u
+        where s.u_id = u.u_id and s.s_id =  #{sId}
     </select>
 
     <update id="updateStrategyStateBySid" parameterType="Integer">
@@ -151,5 +162,14 @@
     <select id="queryStrategyByUid" parameterType="Integer" resultMap="tbStrategyResultMap">
         SELECT s.s_id, s.s_name, s.s_createtime from tb_strategy s
         WHERE s.u_id = #{uId}
+    </select>
+
+    <select id="queryStrategyBySidAndUid" parameterType="Integer" resultMap="tbStrategyResultMap">
+        select s.s_id,
+               s.s_name,
+               s.s_context,
+               s.s_createtime,
+               s.u_id
+        from tb_strategy s where s.s_id = #{sId} and s.u_id = #{uId}
     </select>
 </mapper>

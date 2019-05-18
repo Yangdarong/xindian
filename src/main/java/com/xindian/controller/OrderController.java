@@ -45,26 +45,38 @@ public class OrderController {
         // 1.1 接收点单食物ID
         //int fId = Integer.parseInt(request.getParameter("fId"));
         // 1.2 判断是否创建新的订单
+        String message;
         if (service.queryCreatedOrder(order) == null) { // 订单未创建 创建全新订单
             // 2. 创建订单 参数：uId, mId
             // 2.1. 操作:订单状态->进行中, 添加创建时间
             order.setoState(ValueUtils.ORDER_ON_GOING);
             createNewOrder(order, request, ValueUtils.FOOD_DEFAULT_AMOUNT);
+
+            message = "创建购物车成功!";
         } else {                                        // 订单创建
             //System.out.println("将新的菜添加到订单列表");
             // 2. 将食物添加到订单
             // 2.1 更新数据到实体
             order = service.queryCreatedOrder(order);
             // 3. 分析食物是否重复
-            TbOrderFood orderFood = service.queryOrderAndFood(order.getoId(), fId);
-            if (orderFood != null) {                                 // 已经添加过这个菜品
-                // 4.1 该订单食物数量+1
-                service.addOrderWithFoodAmount(orderFood);
-            } else {                                                 // 没有添加过这个菜品
-                // 4.2 创建该订单食物
-                service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
+            fId = Integer.parseInt(request.getParameter("fId"));
+            if (fId != 0) {
+                TbOrderFood orderFood = service.queryOrderAndFood(order.getoId(), fId);
+                if (orderFood != null) {                                 // 已经添加过这个菜品
+                    // 4.1 该订单食物数量+1
+                    service.addOrderWithFoodAmount(orderFood);
+                    message = "菜品已经被添加!";
+                } else {                                                 // 没有添加过这个菜品
+                    // 4.2 创建该订单食物
+                    service.addFoodToOrder(order.getoId(), fId, ValueUtils.FOOD_DEFAULT_AMOUNT);
+                    message = "添加菜品成功!";
+                }
+            } else {
+                message = "菜品信息异常,请重试";
             }
         }
+
+        UrlUtils.sendJsonData(response, 1, message);
     }
 
     private int fId;
@@ -74,10 +86,10 @@ public class OrderController {
         order.setoPayState(0);
         fId = Integer.parseInt(request.getParameter("fId"));
         service.createNewOrder(order);
-        order = service.queryCreatedOrder(order);
+        int oId = service.queryCreatedOid();
 
 
-        service.addFoodToOrder(order.getoId(), fId, ofAmount);
+        service.addFoodToOrder(oId, fId, ofAmount);
     }
 
     /**
@@ -108,6 +120,7 @@ public class OrderController {
                             cost += orderFood.getOfAmount() * orderFood.getFood().getfDPrice();
                         }
                         order.setoCost(cost);
+                        service.updateOrderCost(order);
                         sum += cost;
                     }
 
@@ -116,13 +129,15 @@ public class OrderController {
                 orderUser.setOuCost(sum);
                 orderUser.setOuPayTime(new Timestamp(new Date().getTime()));
                 orderUser.setUser(orders.get(0).getUser());
-
+                int uId = orders.get(0).getUser().getuId();
+                orderUser.setuId(uId);
                 service.createAnOrderUser(orderUser);
                 int ouId = service.queryCreatedOrderUserId();
                 orderUser.setOuId(ouId);
 
                 for (TbOrder order : orders) {
                     order.setOrderUser(orderUser);
+                    order.setOuId(ouId);
                     order.setoState(ValueUtils.ORDER_USER_ACCEPT);  // 转化成为用户确定状态
                     service.updateOrderWithUser(order);
                 }

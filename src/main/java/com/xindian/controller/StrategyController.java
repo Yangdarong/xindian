@@ -177,10 +177,19 @@ public class StrategyController {
         int uId = Integer.parseInt(request.getParameter("uId"));
 
         if (sId != 0 && uId != 0) {
-            // 创建关注
-            service.createNewStrategyUser(sId, uId);
+            // 判断是不是自己的攻略
+            TbStrategy strategy = service.queryStrategyBySidAndUid(sId, uId);
+            if (strategy != null) {
+                // 不能自己关注自己哦
+                UrlUtils.sendJsonData(response, 1, "这是你的美食攻略哦");
+            } else {
+                // 创建关注
+                service.createNewStrategyUser(sId, uId);
 
-            UrlUtils.sendJsonData(response, 1, "关注成功");
+                UrlUtils.sendJsonData(response, 1, "关注成功");
+            }
+
+
         } else {
             UrlUtils.sendJsonData(response, 0, "出现未知错误");
         }

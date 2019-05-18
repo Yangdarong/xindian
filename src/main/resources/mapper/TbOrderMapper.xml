@@ -162,4 +162,8 @@
         delete from tb_order_food
         WHERE of_id = #{ofId}
     </delete>
+
+    <select id="queryCreatedOid" resultType="Integer">
+        select @@IDENTITY
+    </select>
 </mapper>

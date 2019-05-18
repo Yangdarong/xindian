@@ -113,5 +113,10 @@ public interface TbOrderService {
      */
     void deleteOrderFood(TbOrderFood orderFood);
 
+    /**
+     * 返回刚创建的主键值
+     * @return
+     */
+    int queryCreatedOid();
 
 }

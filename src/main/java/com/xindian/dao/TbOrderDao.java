@@ -43,4 +43,7 @@ public interface TbOrderDao {
     List<TbOrder> queryOrderByOuId(@Param("ouId") int ouId);
 
     void deleteOrderFood(TbOrderFood orderFood);
+
+    int queryCreatedOid();
+
 }

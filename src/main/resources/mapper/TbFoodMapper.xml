@@ -59,7 +59,7 @@
     </select>
 
     <select id="queryAllFoodsInfo" resultMap="tbFoodAllInfoResultType">
-        select f.f_id, f.f_name, f.f_url, f.f_price, f.f_dprice, ft.ft_name, m.m_name
+        select f.f_id, f.f_name, f.f_url, f.f_price, f.f_dprice, ft.ft_name, m.m_name, m.m_url
         from tb_food f, tb_food_type ft, tb_mer m
           where f.ft_id = ft.ft_id AND f.m_id = m.m_id;
     </select>
