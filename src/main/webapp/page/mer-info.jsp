@@ -18,7 +18,7 @@
 <body>
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-topbar-brand">
-        <strong>Amaze UI</strong> <small>后台管理模板</small>
+        <strong>欢迎您,${sessionScope.mer.mName}</strong> <small>商家后台系统</small>
     </div>
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -53,13 +53,13 @@
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                         <li><a href="#" class="am-cf"><span class="am-icon-check"></span> 店面资料<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
                         <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
-                        <li><a href="admin-gallery.html"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
-                        <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>
+                        <li><a href="${pageContext.request.contextPath}/mer/queryOrders.do?mId=${sessionScope.mer.mId}"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
+                        <%--<li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>--%>
                         <%--<li><a href="admin-404.html"><span class="am-icon-bug"></span> 404</a></li>--%>
                     </ul>
                 </li>
-                <li><a href="admin-table.html"><span class="am-icon-table"></span> 任务</a></li>
-                <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 日志</a></li>
+                <%--<li><a href="admin-table.html"><span class="am-icon-table"></span> 任务</a></li>
+                <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 日志</a></li>--%>
                 <li><a href="#"><span class="am-icon-sign-out"></span> 注销</a></li>
             </ul>
 

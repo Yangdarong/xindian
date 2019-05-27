@@ -70,7 +70,8 @@ public class TbMerServiceImpl implements TbMerService {
 
         // 封装当前页面
         orderPageBean.setCurrentPage(currentPage);
-        int pageSize = 10;
+        int pageSize = 10
+                ;
         orderPageBean.setPageSize(pageSize);
 
         // 封装总记录数

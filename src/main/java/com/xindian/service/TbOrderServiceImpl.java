@@ -1,6 +1,7 @@
 package com.xindian.service;
 
 import com.xindian.dao.TbOrderDao;
+import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 import com.xindian.pojo.TbOrderUser;
@@ -53,8 +54,8 @@ public class TbOrderServiceImpl implements TbOrderService {
     }
 
     @Override
-    public List<TbOrderFood> queryFoodsByOrder(TbOrder order) {
-        return orderDao.queryFoodsByOrder(order);
+    public List<TbOrderFood> queryFoodsByOrder(int oId) {
+        return orderDao.queryFoodsByOrder(oId);
     }
 
     @Override
@@ -110,6 +111,11 @@ public class TbOrderServiceImpl implements TbOrderService {
     @Override
     public int queryCreatedOid() {
         return orderDao.queryCreatedOid();
+    }
+
+    @Override
+    public List<TbOrder> queryWaitConfirm(int oState, int uId) {
+        return orderDao.queryWaitConfirm(oState, uId);
     }
 
 }

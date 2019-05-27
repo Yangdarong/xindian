@@ -1,5 +1,6 @@
 package com.xindian.service;
 
+import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 import com.xindian.pojo.TbOrderUser;
@@ -48,7 +49,7 @@ public interface TbOrderService {
 
     List<TbOrder> queryBeingOrderByUId(int uId, int oState);
 
-    List<TbOrderFood> queryFoodsByOrder(TbOrder order);
+    List<TbOrderFood> queryFoodsByOrder(int oId);
 
     /**
      * 计算当前订单的总金额
@@ -119,4 +120,10 @@ public interface TbOrderService {
      */
     int queryCreatedOid();
 
+    /**
+     * 查询没有商家处理的订单食物
+     * @param uId
+     * @return
+     */
+    List<TbOrder> queryWaitConfirm(int oState, int uId);
 }

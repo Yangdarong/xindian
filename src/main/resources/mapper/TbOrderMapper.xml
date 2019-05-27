@@ -31,6 +31,15 @@
         <association property="orderUser" javaType="com.xindian.pojo.TbOrderUser">
             <id property="ouId" column="ou_id" />
         </association>
+
+        <association property="orderFood" javaType="com.xindian.pojo.TbOrderFood">
+            <id property="ofId" column="of_id" />
+            <association property="food" javaType="com.xindian.pojo.TbFood">
+                <id property="fId" column="f_id" />
+                <result property="fName" column="f_name" />
+                <result property="fUrl" column="f_url" />
+            </association>
+        </association>
     </resultMap>
 
     <resultMap id="tbOrderFoodResultMap" type="com.xindian.pojo.TbOrderFood">
@@ -90,7 +99,7 @@
         where o.u_id = u.u_id and o.m_id = m.m_id and o.u_id = #{uId} and o.o_state = #{oState};
     </select>
 
-    <select id="queryFoodsByOrder" resultMap="tbOrderFoodResultMap" parameterType="TbOrder">
+    <select id="queryFoodsByOrder" resultMap="tbOrderFoodResultMap" parameterType="Integer">
         select
             o.o_id, o.o_state, f.f_id, f.f_name,
             f.f_url, f.f_dprice, fo.of_id, fo.of_amount
@@ -165,5 +174,24 @@
 
     <select id="queryCreatedOid" resultType="Integer">
         select @@IDENTITY
+    </select>
+
+    <select id="queryWaitConfirm" parameterType="Integer" resultMap="tbOrderAllInfoResultMap">
+        select
+               f.f_id,
+               f.f_name,
+               f.f_url,
+               m.m_id,
+               m.m_name,
+               m.m_url
+        from
+             tb_order o,
+             tb_order_food fo,
+             tb_food f,
+             tb_mer m
+        Where
+                o.o_id = fo.o_id and fo.f_id = f.f_id
+                and o.m_id = m.m_id and f.m_id = m.m_id
+                and o.o_state = #{oState} and o.o_paystate = 1 and o.u_id = #{uId};
     </select>
 </mapper>

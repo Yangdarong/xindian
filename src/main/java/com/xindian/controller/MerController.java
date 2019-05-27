@@ -153,8 +153,10 @@ public class MerController {
     @RequestMapping("/cancelOrder.do")
     public String cancelOrder(HttpServletRequest request, HttpServletResponse response) {
         int oId = Integer.parseInt(request.getParameter("oId"));
-        service.updateOrderState(oId, ValueUtils.ORDER_USER_CANCEL);
-
+        int oState = Integer.parseInt(request.getParameter("oState"));
+        if (oState < 6) {
+            service.updateOrderState(oId, ValueUtils.ORDER_USER_CANCEL);
+        }
         return refreshMerPage(request);
     }
 
@@ -164,6 +166,14 @@ public class MerController {
         if (session.getAttribute("mer") != null) {  // 如果为空则添加
             TbMer mer = (TbMer) session.getAttribute("mer");
             mId = mer.getmId();
+
+            List<TbOrder> orders = service.queryMerOrder(mer.getmId());
+            if (session.getAttribute("orders") == null) {  // 如果为空则添加
+                session.setAttribute("orders", orders);
+            } else {    // 替换session里面的用户对象
+                session.removeAttribute("orders");
+                session.setAttribute("orders", orders);   // 重新添加
+            }
             return "redirect:/page/merHome?mId=" + mId;
         } else {    // 当没有Mid时显示登录失败
             return "redirect:/loginFail";
@@ -174,7 +184,11 @@ public class MerController {
     public String operatorOrder(HttpServletRequest request, HttpServletResponse response) {
         int oId = Integer.parseInt(request.getParameter("oId"));
         int oState = Integer.parseInt(request.getParameter("oState"));
-        service.updateOrderState(oId, oState + 1);
+        if (oState == 4) {
+            service.updateOrderState(oId, oState + 1);
+        } else if (oState == 5) {
+            service.updateOrderState(oId, oState + 2);
+        }
         // 获取商家ID
         return refreshMerPage(request);
     }

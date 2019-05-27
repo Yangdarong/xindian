@@ -53,19 +53,19 @@
     <div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
         <div class="am-offcanvas-bar admin-offcanvas-bar">
             <ul class="am-list admin-sidebar-list">
-                <li><a href="mer-index.html"><span class="am-icon-home"></span> 首页</a></li>
+                <li><a href="${pageContext.request.contextPath}/page/merHome?mId=${sessionScope.mer.mId}"><span class="am-icon-home"></span> 首页</a></li>
                 <li class="admin-parent">
                     <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 页面模块 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
                         <li><a href="${pageContext.request.contextPath}/page/merInfo" class="am-cf"><span class="am-icon-check"></span> 店面资料<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
                         <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
                         <li><a href="${pageContext.request.contextPath}/mer/queryOrders.do?mId=${sessionScope.mer.mId}"><span class="am-icon-th"></span> 订单查看<span class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
-                        <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>
+                        <%--<li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>--%>
                         <%--<li><a href="admin-404.html"><span class="am-icon-bug"></span> 404</a></li>--%>
                     </ul>
                 </li>
-                <li><a href="admin-table.html"><span class="am-icon-table"></span> 任务</a></li>
-                <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 日志</a></li>
+                <%--<li><a href="admin-table.html"><span class="am-icon-table"></span> 任务</a></li>--%>
+                <%--<li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 日志</a></li>--%>
                 <li><a href="#"><span class="am-icon-sign-out"></span> 注销</a></li>
             </ul>
 
@@ -134,7 +134,7 @@
                                 </c:if>
                                 </td>
                                 <td>
-                                <c:if test="${order.oState > 5}">
+                                <c:if test="${order.oState > 3}">
                                     <div class="am-dropdown" data-am-dropdown>
                                         <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle" data-am-dropdown-toggle><span class="am-icon-cog"></span> <span class="am-icon-caret-down"></span></button>
                                         <ul class="am-dropdown-content">
@@ -159,107 +159,14 @@
 
                 <div class="am-u-md-6">
                     <div class="am-panel am-panel-default">
-                        <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-4'}">任务 task<span class="am-icon-chevron-down am-fr" ></span></div>
-                        <div id="collapse-panel-4" class="am-panel-bd am-collapse am-in">
-                            <ul class="am-list admin-content-task">
-                                <li>
-                                    <div class="admin-task-meta"> Posted on 25/1/2120 by John Clark</div>
-                                    <div class="admin-task-bd">
-                                        The starting place for exploring business management; helping new managers get started and experienced managers get better.
-                                    </div>
-                                    <div class="am-cf">
-                                        <div class="am-btn-toolbar am-fl">
-                                            <div class="am-btn-group am-btn-group-xs">
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-check"></span></button>
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-pencil"></span></button>
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-times"></span></button>
-                                            </div>
-                                        </div>
-                                        <div class="am-fr">
-                                            <button type="button" class="am-btn am-btn-default am-btn-xs">删除</button>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="admin-task-meta"> Posted on 25/1/2120 by 呵呵呵</div>
-                                    <div class="admin-task-bd">
-                                        基兰和狗熊出现在不同阵营时。基兰会获得BUFF，“装甲熊憎恨者”。狗熊会获得BUFF，“时光老人憎恨者”。
-                                    </div>
-                                    <div class="am-cf">
-                                        <div class="am-btn-toolbar am-fl">
-                                            <div class="am-btn-group am-btn-group-xs">
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-check"></span></button>
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-pencil"></span></button>
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-times"></span></button>
-                                            </div>
-                                        </div>
-                                        <div class="am-fr">
-                                            <button type="button" class="am-btn am-btn-default am-btn-xs">删除</button>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="admin-task-meta"> Posted on 25/1/2120 by 呵呵呵</div>
-                                    <div class="admin-task-bd">
-                                        基兰和狗熊出现在不同阵营时。基兰会获得BUFF，“装甲熊憎恨者”。狗熊会获得BUFF，“时光老人憎恨者”。
-                                    </div>
-                                    <div class="am-cf">
-                                        <div class="am-btn-toolbar am-fl">
-                                            <div class="am-btn-group am-btn-group-xs">
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-check"></span></button>
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-pencil"></span></button>
-                                                <button type="button" class="am-btn am-btn-default"><span class="am-icon-times"></span></button>
-                                            </div>
-                                        </div>
-                                        <div class="am-fr">
-                                            <button type="button" class="am-btn am-btn-default am-btn-xs">删除</button>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+
                     </div>
 
 
                 </div>
                 <div class="am-u-md-6">
                     <div class="am-panel am-panel-default">
-                        <div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-3'}">最近评价<span class="am-icon-chevron-down am-fr" ></span></div>
-                        <div class="am-panel-bd am-collapse am-in am-cf" id="collapse-panel-3">
-                            <ul class="am-comments-list admin-content-comment">
-                                <li class="am-comment">
-                                    <a href="#"><img src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48"></a>
-                                    <div class="am-comment-main">
-                                        <header class="am-comment-hd">
-                                            <div class="am-comment-meta"><a href="#" class="am-comment-author">某人</a> 评论于 <time>2014-7-12 15:30</time></div>
-                                        </header>
-                                        <div class="am-comment-bd"><p>遵循 “移动优先（Mobile First）”、“渐进增强（Progressive enhancement）”的理念，可先从移动设备开始开发网站，逐步在扩展的更大屏幕的设备上，专注于最重要的内容和交互，很好。</p>
-                                        </div>
-                                    </div>
-                                </li>
 
-                                <li class="am-comment">
-                                    <a href="#"><img src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48"></a>
-                                    <div class="am-comment-main">
-                                        <header class="am-comment-hd">
-                                            <div class="am-comment-meta"><a href="#" class="am-comment-author">某人</a> 评论于 <time>2014-7-12 15:30</time></div>
-                                        </header>
-                                        <div class="am-comment-bd"><p>有效减少为兼容旧浏览器的臃肿代码；基于 CSS3 的交互效果，平滑、高效。AMUI专注于现代浏览器（支持HTML5），不再为过时的浏览器耗费资源，为更有价值的用户提高更好的体验。</p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                            </ul>
-                            <ul class="am-pagination am-fr admin-content-pagination">
-                                <li class="am-disabled"><a href="#">&laquo;</a></li>
-                                <li class="am-active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -2,12 +2,10 @@ package com.xindian.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xindian.common.CommonResultType;
+import com.xindian.common.FoodsResultType;
 import com.xindian.common.OrderFoodsResultType;
 import com.xindian.common.OrderResultType;
-import com.xindian.pojo.TbOrder;
-import com.xindian.pojo.TbOrderFood;
-import com.xindian.pojo.TbOrderUser;
-import com.xindian.pojo.TbUser;
+import com.xindian.pojo.*;
 import com.xindian.service.TbOrderService;
 import com.xindian.utils.UrlUtils;
 import com.xindian.utils.ValueUtils;
@@ -276,7 +274,7 @@ public class OrderController {
             // 返回订单信息
             List<TbOrderFood> orderFoods = new ArrayList<>();
             for (TbOrder order : orders) {
-                orderFoods.addAll(service.queryFoodsByOrder(order));
+                orderFoods.addAll(service.queryFoodsByOrder(order.getoId()));
             }
             // 返回所属的菜单信息
 
@@ -325,6 +323,29 @@ public class OrderController {
     public void countMoney(HttpServletResponse response, TbUser user) {
         float total = service.countBuyCarTotal(user.getuId());
         UrlUtils.sendJsonData(response, 1, String.format("%.2f", total));
+    }
+
+    @RequestMapping("/queryWait.json")
+    public void queryWait(HttpServletRequest request, HttpServletResponse response) {
+        int uId = Integer.parseInt(request.getParameter("uId"));
+        int oState = Integer.parseInt(request.getParameter("oState"));
+        FoodsResultType resultType = new FoodsResultType();
+        if (uId != 0) {
+            List<TbOrder> orders = service.queryWaitConfirm(oState, uId);
+            List<TbFood> foods = new ArrayList<>();
+            if (orders.size() != 0) {
+                for (TbOrder order : orders) {
+                    TbFood food = order.getOrderFood().getFood();
+                    TbMer mer = order.getMer();
+                    food.setMer(mer);
+                    foods.add(food);
+                }
+            }
+            UrlUtils.sendJsonData(response, resultType, foods);
+
+        } else {
+            UrlUtils.sendJsonData(response, resultType, null);
+        }
     }
 
     /*-----------------------------管理端-----------------------------------*/

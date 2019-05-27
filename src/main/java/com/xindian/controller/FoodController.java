@@ -111,8 +111,9 @@ public class FoodController {
         List<TbFood> foods = service.queryAllFoodsInfo();
         Collections.reverse(foods);
 
+        List<TbFood> dFoods = foods.subList(0, 4);
         FoodsResultType resultType = new FoodsResultType();
-        UrlUtils.sendJsonData(response, resultType, foods);
+        UrlUtils.sendJsonData(response, resultType, dFoods);
     }
 
     /*-----------------------------管理端-----------------------------------*/

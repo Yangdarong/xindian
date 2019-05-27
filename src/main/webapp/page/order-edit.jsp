@@ -67,14 +67,14 @@
                         <li><a href="${pageContext.request.contextPath}/page/merInfo" class="am-cf"><span
                                 class="am-icon-check"></span> 店面资料<span
                                 class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
-                        <li><a href="#"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
-                        <li><a href="admin-gallery.html"><span class="am-icon-th"></span> 订单查看<span
+                        <li><a href="${pageContext.request.contextPath}/food/queryFoods.do?mId=${sessionScope.mer.mId}"><span class="am-icon-puzzle-piece"></span> 菜品编辑</a></li>
+                        <li><a href="${pageContext.request.contextPath}/mer/queryOrders.do?"><span class="am-icon-th"></span> 订单查看<span
                                 class="am-badge am-badge-secondary am-margin-right am-fr">24</span></a></li>
-                        <li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>
+                        <%--<li><a href="admin-log.html"><span class="am-icon-calendar"></span> 用户维护</a></li>--%>
                     </ul>
                 </li>
-                <li><a href="admin-table.html"><span class="am-icon-table"></span> 表格</a></li>
-                <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 表单</a></li>
+                <%--<li><a href="admin-table.html"><span class="am-icon-table"></span> 表格</a></li>
+                <li><a href="admin-form.html"><span class="am-icon-pencil-square-o"></span> 表单</a></li>--%>
                 <li><a href="#"><span class="am-icon-sign-out"></span> 注销</a></li>
             </ul>
 

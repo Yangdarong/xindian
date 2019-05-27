@@ -1,5 +1,6 @@
 package com.xindian.dao;
 
+import com.xindian.pojo.TbFood;
 import com.xindian.pojo.TbOrder;
 import com.xindian.pojo.TbOrderFood;
 import com.xindian.pojo.TbOrderUser;
@@ -18,7 +19,7 @@ public interface TbOrderDao {
 
     List<TbOrder> queryBeingOrderByUId(@Param("uId") int uId, @Param("oState") int oState);
 
-    List<TbOrderFood> queryFoodsByOrder(TbOrder order);
+    List<TbOrderFood> queryFoodsByOrder(@Param("oId") int oId);
 
     void addFoodAmount(TbOrderFood orderFood);
 
@@ -46,4 +47,5 @@ public interface TbOrderDao {
 
     int queryCreatedOid();
 
+    List<TbOrder> queryWaitConfirm(@Param("oState") int oState, @Param("uId") int uId);
 }
