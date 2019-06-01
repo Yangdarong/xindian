@@ -161,7 +161,7 @@
 
     <select id="queryStrategyByUid" parameterType="Integer" resultMap="tbStrategyResultMap">
         SELECT s.s_id, s.s_name, s.s_createtime from tb_strategy s
-        WHERE s.u_id = #{uId}
+        WHERE s.u_id = #{uId} and s.s_state = 2;
     </select>
 
     <select id="queryStrategyBySidAndUid" parameterType="Integer" resultMap="tbStrategyResultMap">
