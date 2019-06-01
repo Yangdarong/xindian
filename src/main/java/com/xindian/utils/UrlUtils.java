@@ -204,6 +204,7 @@ public class UrlUtils {
                     resultType.setStrategies(null);
                     resultType.setMessage("获取数据失败");
                 }
+                mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
                 out.write(mapper.writeValueAsString(resultType));
             } catch (Exception e) {
                 e.printStackTrace();
